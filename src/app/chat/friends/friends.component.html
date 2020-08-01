@@ -1,0 +1,13 @@
+<!-- <mat-list *ngFor="let friend of friends;let i =index" style="cursor:pointer;" 
+[ngClass]="{active:friend._id==id||mail==friend.mail}" 
+(click)="getMsg(friend,friend._id)" > -->
+<mat-list *ngFor="let friend of friends;let i =index" style="cursor:pointer;" 
+ [ngStyle]="styleObject(friend)" 
+(click)="getMsg(friend,friend._id)" >
+	<img  *ngIf="friend.image" src={{friend.image}}> 
+	<span *ngIf="(friend._id==id||mail==friend.mail||friend.count==0);else block">{{friend.name}}({{friend.connection}})
+	</span>
+	<ng-template #block>
+		<span  matBadge="{{friend.count}}" matBadgeOverlap="false">{{friend.name}}({{friend.connection}})</span>
+	</ng-template>
+</mat-list>

@@ -1,0 +1,32 @@
+.example-card {
+    margin-top: 2em;
+  /*max-width: 400px;*/
+  margin: 2em auto;
+  /*text-align: center;*/
+}
+
+.example-fill-remaining-space {
+  /* This fills the remaining space, by using flexbox. 
+     Every toolbar row uses a flexbox row layout. */
+   flex: 1 1 auto;
+}
+
+
+img
+ {
+  display: inline-block;
+  width: 200px;
+  height:200px;
+  border-radius: 50%;
+
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+.radiobutton
+{
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0
+}

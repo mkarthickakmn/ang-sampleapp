@@ -1,0 +1,72 @@
+
+<!-- //////////search friend///////////// -->
+<mat-card style="margin-bottom: 2%">
+  <mat-card-content>
+    <div class="upload">
+		<form class="example-form">
+		  <mat-form-field class="example-full-width">
+		    <input type="text"
+		           placeholder="Pick one"
+		           aria-label="Number"
+		           matInput
+		           [formControl]="myControl"
+		           [matAutocomplete]="auto">
+		    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+		      <mat-option *ngFor="let option of filteredOptions | async" 
+		      [value]="option.name" style="padding: 5%">
+		        <mat-list><img  *ngIf="option.image" src={{option.image}}> <span >{{option.name}}</span></mat-list>
+		      </mat-option>
+		    </mat-autocomplete>
+		  </mat-form-field>
+		  <button color="accent" mat-raised-button (click)="openFriends()">Open friend</button>
+		</form>   	
+    </div>
+  </mat-card-content>
+</mat-card>
+<button mat-button *ngIf="getfriend.length>0" (click)="back()" style="float: left;" >back</button>
+<app-view-friend *ngIf="getfriend.length>0" [getfriend]="getfriend"></app-view-friend>
+
+<!-- ////////friend request///// -->
+<mat-card *ngIf="request">
+	<mat-card-title><span  matBadge="{{request.length}}" matBadgeOverlap="false">Friend Requests </span></mat-card-title>
+	<mat-card-content *ngIf="request.length==0">No requests found...</mat-card-content>
+	<mat-card-content *ngFor="let req of request">
+		<mat-list>
+			<span><img src={{req.image}}></span>
+			<span>{{req.name}}
+				 <button mat-raised-button color="primary" (click)="accept(req.from,req.to,req.id)">Accept request</button>
+   				 <button mat-raised-button color="warn" (click)="del(req.from,req.to)">Delete request</button>
+			</span>
+		</mat-list>	
+		<mat-accordion>
+		  <mat-expansion-panel (opened)="panelOpenState1 = true"
+		                       (closed)="panelOpenState1 = false" >
+           <mat-expansion-panel-header (click)="openFriendProfile(req.from)">
+		      <mat-panel-title>
+				<p style="margin-top:2em"><button mat-button >View Profile</button></p>
+		      </mat-panel-title>    
+		    </mat-expansion-panel-header>
+				<app-view-friend *ngIf="viewfriendDetails.length>0" [getfriend]="viewfriendDetails">	
+				</app-view-friend> 
+		  </mat-expansion-panel>
+		</mat-accordion>
+	</mat-card-content>
+</mat-card>
+
+<!-- /////////view friend lists/////////////////// -->
+
+<mat-expansion-panel (opened)="panelOpenState = true"
+                       (closed)="panelOpenState = false" (click)="viewList()" style="margin-top: 2em;padding-top:2%">
+  	<mat-expansion-panel-header>
+	<mat-panel-title style="padding-top:4%;padding-bottom: 2%;">
+        <span  matBadge="{{count}}" matBadgeOverlap="false"><h2>View Friend lists</h2></span>
+  	</mat-panel-title>
+    </mat-expansion-panel-header>
+    <p *ngFor="let friend of list">
+        <mat-list>
+        	<img  *ngIf="friend.image" src={{friend.image}}> <span >{{friend.name}}
+    		<button mat-raised-button (click)="removeFriend(friend.friend)" color="warn">Remove friend</button></span>
+        </mat-list>
+    </p>
+    <p *ngIf="list.length==0">No friends available..</p>
+</mat-expansion-panel>

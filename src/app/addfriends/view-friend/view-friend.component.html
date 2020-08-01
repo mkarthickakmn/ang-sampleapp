@@ -1,0 +1,28 @@
+<mat-card class="example-card" >
+	<h1 >{{friend.name}}</h1 >
+  	<img mat-card-image src={{friend.image}} alt="{{friend.name}}'s Photo">
+  	<mat-card-content >	
+	  <div *ngIf="friend.friendrequest==''">
+	  	<button mat-raised-button color="accent" (click)="sendReq()">Send Friend request</button>
+	  </div>
+	  <div *ngIf="friend.friendrequest=='accepted'" >
+	  	<p>You are already friend to {{friend.name}}</p>
+	  <button mat-raised-button color="warn" (click)="removeFriend()">Remove Friend</button></div>
+	  <div *ngIf="friend.friendrequest=='sent'">
+	  	<p>You sent a request to {{friend.name}}</p>
+	   <button mat-raised-button color="primary" (click)="cancelReq()">Cancel request</button></div>	  	  
+  	</mat-card-content>
+  	<mat-tab-group mat-align-tabs="center">
+	  <mat-tab label="View Profile">
+	     <h3 *ngIf="friend.mail">Email:{{friend.mail}}</h3 >
+	     <h3 *ngIf="friend.gender">gender:{{friend.gender}}</h3 >
+	 	 <h3 *ngIf="friend.dob">Date of Birth:{{friend.dob}}</h3 >
+	     <h3 *ngIf="friend.mobile">phone number:{{friend.mobile}}</h3 >
+		 <h3 *ngIf="friend.street">Address:{{friend.street}},{{friend.city}},{{friend.state}}</h3 >
+	  </mat-tab>
+	  <mat-tab label="View Posts">
+	  	<app-fetchposts [mail]=friend.mail></app-fetchposts>
+	  </mat-tab>
+</mat-tab-group>
+</mat-card>
+

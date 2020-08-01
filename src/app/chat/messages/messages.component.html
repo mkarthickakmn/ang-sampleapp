@@ -1,0 +1,21 @@
+<div style="margin-bottom: 35%">
+	<div *ngIf="friend" style="text-align: center;" class="user">
+		<img src={{friend.image}} draggable="false"/><span ><h1>{{friend.name}}</h1>({{friend.connection}})</span>
+	</div>
+	<ol class="chat" *ngFor="let msgs of messages">
+		<li  [ngClass]="{self:msgs.from==user.mail}">
+		    <div class="user" *ngIf="user&&msgs.from==user.mail"><p>You</p>
+				<img src={{this.user.image}} draggable="false"/></div>
+		    <div class="user" *ngIf="friend&&msgs.from!=user.mail"><p>{{friend.name}}</p>
+		    	<img src={{friend.image}} draggable="false"/></div>
+		  	<div class="msg" style="margin-bottom: 10px">
+			    <p>{{msgs.message}}</p>
+			    <time >{{msgs.time}}</time>
+			    <!-- <time *ngIf="msgs.time.length>0">{{msgs.time}}</time> -->
+		  	</div>
+		</li>
+	</ol>
+	<ol class="chat" *ngIf="!friend">{{info}}</ol>
+	<ol class="chat" *ngIf="messages.length==0&&friend">No messages available.</ol>
+</div>
+<input class="textarea" type="text" placeholder="Type here!" [disabled]="!friend" [(ngModel)]="message" (keyup)="$event.keyCode == 13 && sendMessage()" /><div class="emojis"></div>

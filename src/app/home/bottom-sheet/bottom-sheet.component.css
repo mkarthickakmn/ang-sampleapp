@@ -1,0 +1,31 @@
+.example-card {
+    margin-top: 2em;
+  /*max-width: 400px;*/
+  margin: 2em auto;
+  text-align: center;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+.image-upload > input
+{
+    display: none;
+}
+
+.image-upload img
+{
+    width: 80px;
+    cursor: pointer;
+ }
+
+ img
+ {
+  display: inline-block;
+  width: 200px;
+  height:200px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}

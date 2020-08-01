@@ -1,0 +1,37 @@
+<mat-card class="example-card">
+	<mat-card-header>
+	    <mat-card-title>Set your Privacy here !</mat-card-title>
+	</mat-card-header>
+  <mat-card-content  >
+  	<mat-accordion>
+		  <mat-expansion-panel (opened)="panelOpenState1 = true"
+		                       (closed)="panelOpenState1 = false" >
+           <mat-expansion-panel-header >
+		      <mat-panel-title>
+				<p style="margin-top:2em">Set privacy for your profile</p>
+		      </mat-panel-title>    
+		    </mat-expansion-panel-header>
+		    <mat-radio-group  [(ngModel)]="prof_privacy">
+			    <mat-radio-button class="radiobutton" color="primary" *ngFor="let privacy of privacy" [value]="privacy">
+			    	{{privacy}}
+			    </mat-radio-button>
+			</mat-radio-group>
+			<button mat-raised-button color="accent" (click)='hideProfile(prof_privacy)'>Apply</button>
+		  </mat-expansion-panel>
+		    <mat-expansion-panel (opened)="panelOpenState1 = true"
+		                      	 (closed)="panelOpenState1 = false" >
+	       <mat-expansion-panel-header >
+		      <mat-panel-title>
+				<p style="margin-top:2em">Set privacy for your posts</p>
+		      </mat-panel-title>    
+		    </mat-expansion-panel-header>
+		    <mat-radio-group  [(ngModel)]="post_privacy">
+			    <mat-radio-button class="radiobutton" color="primary" *ngFor="let privacy of privacy" [value]="privacy">
+			    	{{privacy}}
+			    </mat-radio-button>
+			</mat-radio-group>
+			<button mat-raised-button color="accent" (click)='hidePosts(post_privacy)'>Apply</button> 
+		  </mat-expansion-panel>
+		</mat-accordion>	  
+  </mat-card-content>
+</mat-card>

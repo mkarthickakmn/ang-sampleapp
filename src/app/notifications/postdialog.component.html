@@ -1,0 +1,11 @@
+
+<div mat-dialog-content>
+  <div mat-card-avatar style="text-align: center;" ><img class="img1" src={{data.image}}></div>
+	<h3 style="text-align: center;">{{data.name}}'s post</h3>
+  	<img class="img2" mat-card-image src={{data.img}} >
+   	<h2>{{data.caption}}</h2>
+    <p>
+     {{data.desc}}
+    </p>
+ 	<div style="text-align: center;"><button mat-button (click)="onNoClick()"  >close</button></div> 
+</div>

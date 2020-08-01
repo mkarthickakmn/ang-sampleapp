@@ -1,0 +1,55 @@
+.example-card {
+    margin-top: 2em;
+  /*max-width: 400px;*/
+  margin: 2em auto;
+  text-align: center;
+}
+
+.example-fill-remaining-space {
+  /* This fills the remaining space, by using flexbox. 
+     Every toolbar row uses a flexbox row layout. */
+   flex: 1 1 auto;
+}
+
+
+img
+ {
+  display: inline-block;
+  width: 200px;
+  height:200px;
+  border-radius: 50%;
+
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+.image-upload > input
+{
+    display: none;
+}
+
+.image-upload img
+{
+    width: 80px;
+    cursor: pointer;
+ }
+
+ ::ng-deep .mat-snack-bar-container{
+  color: #155724 !important;
+  background-color: #d4edda !important;
+  /*border-color: #c3e6cb !important;*/
+}
+::ng-deep .mat-simple-snackbar-action {
+  color: red;
+}

@@ -1,0 +1,29 @@
+<mat-card class="example-card1" *ngFor="let post of posts">
+<mat-card-header style="margin-bottom:5%">
+  <div mat-card-avatar ><img class="img1" src={{post.image}}></div>
+    <mat-card-title *ngIf="!post.sharedFrom">{{post.name}} upload a post</mat-card-title>
+    <mat-card-title *ngIf="post.sharedFrom">{{post.name}} shared {{post.sharer}}'s post</mat-card-title>
+    <mat-card-subtitle >{{post.mail}}<span *ngIf="post.type=='public'"> ({{post.type}})</span></mat-card-subtitle>
+  </mat-card-header>
+  <img class="img2" *ngIf="post.post.img" mat-card-image src={{post.post.img}} >
+  <mat-card-content >
+    <h2>{{post.post.caption}}</h2>
+    <p >
+     {{post.post.desc}}
+    </p>
+    <p  *ngIf="!post.sharedFrom">
+     posted on:{{post.post_date}}
+    </p>
+    <p  *ngIf="post.sharedFrom">
+     shared on:{{post.post_date}}
+    </p>
+    <p>{{post.post_time}}</p>
+    <p>Likes{{post.count}}</p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button *ngIf="post.like==1;else block" mat-button (click)="unlike(post._id,post.mail)">UNLIKE</button>
+    <ng-template #block><button mat-button (click)="like(post._id,post.mail)">LIKE</button></ng-template>
+    <button mat-button (click)="share(post.post,post.mail)" *ngIf="post.mail!=user.mail">SHARE</button>
+  </mat-card-actions>
+</mat-card>
+<mat-card *ngIf="noPosts"><h3>{{noPosts}}</h3></mat-card>

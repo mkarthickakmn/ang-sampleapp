@@ -1,0 +1,27 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>Chatter Box</span>
+    <span class="example-fill-remaining-space"></span>
+    <span *ngIf="isLogin" routerLink="/home" style="cursor: pointer;">Home|</span>
+    <span *ngIf="isLogin" routerLink="/addFriends" matBadge="{{requestCount}}" matBadgePosition="above" 
+      matBadgeColor="accent" style="cursor: pointer;">Add Friend|</span>
+    <span *ngIf="isLogin" routerLink="/notifications"  matBadge="{{notifyCount}}" matBadgePosition="above" 
+      matBadgeColor="accent" style="cursor: pointer;">Notifications|</span>
+    <span *ngIf="isLogin" routerLink="/chat"  matBadge="{{chatCount}}" matBadgePosition="above" 
+      matBadgeColor="accent" style="cursor: pointer;">Chats|</span>
+    <span *ngIf="isLogin" routerLink="/profile" style="cursor: pointer;">My profile|</span>
+    <span *ngIf="isLogin&&user"> ( {{user}} ) </span>
+    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>
+        <span>help</span>
+      </button>
+      <button mat-menu-item  (click)="logout()">
+        <mat-icon>dialpad</mat-icon>
+        <span>logout</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar-row>
+</mat-toolbar>
