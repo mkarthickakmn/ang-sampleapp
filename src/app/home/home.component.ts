@@ -10,7 +10,7 @@ import{HomeService} from './HomeService.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Subscription} from 'rxjs';
 import{Notification} from '../shared/notification.service';
-import{ChatService} from '../chat/messages/chat.service';
+// import{ChatService} from '../chat/messages/chat.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit,OnDestroy {
 
   constructor(private _bottomSheet: MatBottomSheet,private datastorage:DataStorageService,
     private auth:AuthService,private homeService:HomeService,private _snackBar: MatSnackBar,
-    private notify:Notification,private chat:ChatService) {}
+    private notify:Notification) {}
    image:any='';
   uploadpost:FormGroup;
   user:any=null;
@@ -65,7 +65,7 @@ export class HomeComponent implements OnInit,OnDestroy {
   {
     this.sub3=this.datastorage.likePost(id,mail,this.auth.getUser().mail,1).subscribe(data=>{
        this.fetchPosts();
-       this.chat.likePost(mail);
+       // this.chat.likePost(mail);
        this.datastorage.countNotify(this.auth.getUser().mail).subscribe(count=>{
           this.notify.getNotifyCount.next(count.count++);  
       })  
@@ -76,7 +76,7 @@ export class HomeComponent implements OnInit,OnDestroy {
   {
     this.sub4=this.datastorage.unlikePost(id,mail,this.auth.getUser().mail,-1).subscribe(data=>{
        this.fetchPosts();
-       this.chat.likePost(mail);
+       // this.chat.likePost(mail);
        this.datastorage.countNotify(this.auth.getUser().mail).subscribe(count=>{
           this.notify.getNotifyCount.next(count.count++);  
       })  

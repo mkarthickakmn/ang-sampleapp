@@ -7,8 +7,8 @@
       matBadgeColor="accent" style="cursor: pointer;">Add Friend|</span>
     <span *ngIf="isLogin" routerLink="/notifications"  matBadge="{{notifyCount}}" matBadgePosition="above" 
       matBadgeColor="accent" style="cursor: pointer;">Notifications|</span>
-    <span *ngIf="isLogin" routerLink="/chat"  matBadge="{{chatCount}}" matBadgePosition="above" 
-      matBadgeColor="accent" style="cursor: pointer;">Chats|</span>
+    <!-- <span *ngIf="isLogin" routerLink="/chat"  matBadge="{{chatCount}}" matBadgePosition="above" 
+      matBadgeColor="accent" style="cursor: pointer;">Chats|</span> -->
     <span *ngIf="isLogin" routerLink="/profile" style="cursor: pointer;">My profile|</span>
     <span *ngIf="isLogin&&user"> ( {{user}} ) </span>
     <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">

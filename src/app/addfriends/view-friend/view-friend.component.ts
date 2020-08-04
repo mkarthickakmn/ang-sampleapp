@@ -4,7 +4,7 @@ import{AuthService} from '../../login/auth.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Subscription} from 'rxjs';
 import {Notification} from '../../shared/notification.service';
-import{ChatService} from '../../chat/messages/chat.service';
+// import{ChatService} from '../../chat/messages/chat.service';
 @Component({
   selector: 'app-view-friend',
   templateUrl: './view-friend.component.html',
@@ -13,7 +13,7 @@ import{ChatService} from '../../chat/messages/chat.service';
 export class ViewFriendComponent implements OnInit,OnDestroy {
 
   constructor(private datastorage:DataStorageService,private auth:AuthService,
-    private _snackBar: MatSnackBar,private notify:Notification,private chat:ChatService) { }
+    private _snackBar: MatSnackBar,private notify:Notification) { }
 @Input()getfriend:any=[];
 friend:any;
 mail:string="";
@@ -34,7 +34,7 @@ private sub1:Subscription;
               duration:2000,
             });
        this.friend.friendrequest="sent";
-       this.chat.sendFriendReq(this.mail);
+       // this.chat.sendFriendReq(this.mail);
     });
   }
 

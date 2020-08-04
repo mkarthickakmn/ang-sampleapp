@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from './auth.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Subscription} from 'rxjs';
-import {ChatService} from '../chat/messages/chat.service';
+// import {ChatService} from '../chat/messages/chat.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit,OnDestroy {
   obj:any;
   error:string=null;
   constructor(private fb: FormBuilder,private router:Router,private auth:AuthService,
-    private _snackBar: MatSnackBar,private chat:ChatService) {
+    private _snackBar: MatSnackBar) {
   }
 
   private sub1:Subscription;
@@ -67,7 +67,7 @@ export class LoginComponent implements OnInit,OnDestroy {
         this.sub3=this.auth.login(username,password).subscribe(data=>{
            this.error=null;
            this.sub4=this.auth.setUser().subscribe(data=>{
-             this.chat.newUser(username);
+             // this.chat.newUser(username);
              this.router.navigate(['/home']);
            });
            

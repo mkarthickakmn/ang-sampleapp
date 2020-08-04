@@ -27,98 +27,10 @@ MongoClient.connect(url ,{ useUnifiedTopology: true }, function(err, db) {
 var server=app.listen((process.env.PORT),()=>{
 	console.log("connected");
 });
-var io = require('socket.io').listen(server);
 var users=[];
 var notifications=[];
 var notify="";
-io.on('connection', (socket) => {
- 	
- 	socket.on('new_user', email => {
- 		console.log("user connected");
-	    users[email] = socket.id;
-    	console.log(socket.id+" "+email);
-    	socket.broadcast.emit("friendsjoined",{mail:email,connection:'online'});
-  })
 
- 	socket.on('send_msg', data => {
- 		dbo.collection("messages").insertOne({...data,visibility:'unseen'}, function(err, messages) 
-			{
-			    if (err) throw err;
-			    console.log("msg inserted successfully");
-
-			    dbo.collection("chats").findOne({$or:[{p1:data.from,p2:data.to},{p2:data.from,p1:data.to}]}, function(err, result) 
-				{
-
-					if(!result)
-					    dbo.collection("chats").insertOne({p1:data.from,p2:data.to,time:new Date().getTime()}, function(err, chats) 
-						{
-						    if (err) throw err;
-						    console.log('chats:');
-						    console.log(chats);
-						   
-						    if(users[data.to])
-							socket.broadcast.to(users[data.to]).emit("send-message",data);
-						})
-					else
-					 	dbo.collection("chats").updateOne({$or:[{p1:data.from,p2:data.to},{p2:data.from,p1:data.to}]},{$set:{time:new Date().getTime()}}, function(err, chats) 
-						{
-						    if (err) throw err;
-						    if(users[data.to])
-							{
-							
-								socket.broadcast.to(users[data.to]).emit("send-message",data);				
-							}
-						})
-				})
-				
-			})
-  })
-
- 	socket.on('get_msg', data => {
-
- 		dbo.collection('messages').find({$or:[{from:data.from,to:data.to},{from:data.to,to:data.from}]}).toArray(function(err,messages)
-	  	{
-	  		if(err) throw err;
-
-	  		dbo.collection('messages').updateMany({from:data.from,to:data.to},
-	  			{$set:{visibility:'seen'}},function(err,update)
-		  	{
-			  		socket.emit("chat-message",messages);
-	  		})
-	  	})
-  })
-
-	socket.on('update_msg', data => {
- 	
-  		dbo.collection('messages').updateMany({...data},
-  			{$set:{visibility:'seen'}},function(err,update)
-	  	{
-		  		socket.emit("messageSeen",update);
-  		})
-  })
-
-	socket.on('sendFriendReq', data => {
-		console.log(data+" "+users[data]);
-
-		socket.broadcast.to(users[data]).emit("getFriendReq",{mail:data});
-	})
-
-
-	socket.on('likePost', data => {
-		console.log(data+"like "+users[data]);
-
-		socket.broadcast.to(users[data]).emit("getlikePost",{mail:data});
-	})
- 	
-
-  	socket.on('disconnected', email => {
-
-  		console.log(email+" disconnected");	
-		delete users[email];
-		socket.broadcast.emit("frienddisconnected",{mail:email,connection:'offline'});
-  })
-
-});
 
 app.post('/insertUser',(req,res)=>{
 	var user=req.body.user;

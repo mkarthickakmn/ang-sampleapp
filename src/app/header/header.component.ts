@@ -1,7 +1,7 @@
 import { Component,OnInit,Input,OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs';
 import {Router} from '@angular/router';
-import {ChatService} from '../chat/messages/chat.service';
+// import {ChatService} from '../chat/messages/chat.service';
 import{AuthService} from '../login/auth.service';
 import {Subscription} from 'rxjs';
 import {Notification} from '../shared/notification.service';
@@ -23,7 +23,7 @@ export class HeaderComponent implements OnInit,OnDestroy{
   private sub3:Subscription;
   private sub4:Subscription;
 
-  constructor(private auth:AuthService,private route:Router,private chat:ChatService,
+  constructor(private auth:AuthService,private route:Router,
   private notify:Notification,private datastorage:DataStorageService){}
   
   ngOnInit()
@@ -63,7 +63,7 @@ export class HeaderComponent implements OnInit,OnDestroy{
   logout()
   {
     this.auth.isLogged.next(null);
-    this.chat.disconnected(this.auth.getUser().mail);
+    // this.chat.disconnected(this.auth.getUser().mail);
     console.log('logout')
     this.route.navigate(['/login']);
     localStorage.clear();
