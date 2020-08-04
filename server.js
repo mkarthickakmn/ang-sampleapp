@@ -23,7 +23,10 @@ MongoClient.connect(url ,{ useUnifiedTopology: true }, function(err, db) {
   console.log("Database connected!");
    
 });
-
+// default Heroku PORT
+var server=app.listen((process.env.PORT),()=>{
+	console.log("connected");
+});
 var io = require('socket.io').listen(server);
 var users=[];
 var notifications=[];
@@ -2210,7 +2213,3 @@ app.post('/countNotify',function(req,res)
 		res.send({count:result});
 	}) 	
 })
-// default Heroku PORT
-var server=app.listen((process.env.PORT || 3000),()=>{
-	console.log("connected");
-});

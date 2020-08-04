@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "node server.js",
-    "dev" :"env-cmd ./config/dev.env node server.js",
+    "dev": "env-cmd ./config/dev.env node server.js",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",

@@ -13,7 +13,7 @@ import{Router} from '@angular/router';
 })
 export class AppComponent implements OnInit,OnDestroy{
 
-constructor(private auth:AuthService,private chat:ChatService,
+constructor(private auth:AuthService,
   private notify:Notification,private datastorage:DataStorageService,private route:Router){}
   title = 'Chatterbox';
   isLogin:boolean=false;
@@ -21,26 +21,26 @@ constructor(private auth:AuthService,private chat:ChatService,
   ngOnInit():void
   {
 
-    this.chat.receiveMsg().subscribe(data=>{
-     if(this.route.url!='/chat')
-        this.datastorage.countChat(this.auth.getUser().mail).subscribe(count=>{
-              this.notify.getChatCount.next(count.count);  
-          })
-    })
+  //   this.chat.receiveMsg().subscribe(data=>{
+  //    if(this.route.url!='/chat')
+  //       this.datastorage.countChat(this.auth.getUser().mail).subscribe(count=>{
+  //             this.notify.getChatCount.next(count.count);  
+  //         })
+  //   })
 
-    this.chat.getFriendReq().subscribe(data=>{
-      if(this.route.url!='/addFriends')   
-         this.datastorage.countFriendRequests(this.auth.getUser().mail).subscribe(count=>{
-          this.notify.getFriendCount.next(count.count);  
-      })
-    })
+  //   this.chat.getFriendReq().subscribe(data=>{
+  //     if(this.route.url!='/addFriends')   
+  //        this.datastorage.countFriendRequests(this.auth.getUser().mail).subscribe(count=>{
+  //         this.notify.getFriendCount.next(count.count);  
+  //     })
+  //   })
 
-    this.chat.getLikePosts().subscribe(data=>{
-     if(this.route.url!='/notifications')   
-         this.datastorage.countNotify(this.auth.getUser().mail).subscribe(count=>{
-          this.notify.getNotifyCount.next(count.count);  
-      })  
-  })
+  //   this.chat.getLikePosts().subscribe(data=>{
+  //    if(this.route.url!='/notifications')   
+  //        this.datastorage.countNotify(this.auth.getUser().mail).subscribe(count=>{
+  //         this.notify.getNotifyCount.next(count.count);  
+  //     })  
+  // })
 
   
     this.sub=this.auth.isLogged.subscribe(data=>{
