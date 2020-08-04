@@ -77,7 +77,7 @@ export class AuthService
 	{
 		return this.http
 		  	.post<any>(
-		    'http://localhost:3000/insertUser',
+		    '/insertUser',
 		    {
 		      user:user
 		    }
@@ -88,7 +88,7 @@ export class AuthService
 	{
 		return this.http
 		  	.post<any>(
-		    'http://localhost:3000/updatePwd',
+		    '/updatePwd',
 		    {	
 		    	mail:this.credentials.mail,
 		      	pwd:pwd
@@ -100,7 +100,7 @@ export class AuthService
 	{
 		return this.http
 		  	.post<any>(
-		    'http://localhost:3000/getUser',
+		    '/getUser',
 		    {
 		      credentials:this.credentials
 		    }

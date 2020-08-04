@@ -13,7 +13,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	{
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/updateUser',
+	    '/updateUser',
 	    {
 	      updated_values:updated_values,
 	      mail:mail
@@ -26,7 +26,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	{
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/createPost',
+	    '/createPost',
 	    {
     	  mail:user.mail,
 	      post:post
@@ -38,7 +38,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	{
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/fetchPosts',
+	    '/fetchPosts',
 	    {
     	  mail:mail
 	    }
@@ -49,7 +49,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	{
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/getFriends',
+	    '/getFriends',
 	    {
 	    	mail:mail
 	    }
@@ -60,7 +60,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	{
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/setFriend',
+	    '/setFriend',
 	    {
 	    	user:user,
 	    	friend:friend
@@ -74,7 +74,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 		console.log(user+""+friend)
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/viewFriend',
+	    '/viewFriend',
 	    {
 	    	friend:friend,
 	    	user:user
@@ -88,7 +88,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 		console.log(mail);
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/viewPosts',
+	    '/viewPosts',
 	    {
 	    	mail:mail,
 	    	user:user
@@ -100,7 +100,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	{
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/likePost',
+	    '/likePost',
 	    {
 	    	post_id:id,
 	    	post_mail:post_mail,
@@ -128,7 +128,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	{
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/sharePost',
+	    '/sharePost',
 	    {
 	    	post:post,
 	    	mail:mail,
@@ -143,7 +143,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	{
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/sendFriendRequests',
+	    '/sendFriendRequests',
 	    {
 	    	from:from,
 	    	to:to
@@ -155,7 +155,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	{
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/fetchFriendRequests',
+	    '/fetchFriendRequests',
 	    {
 	    	mail:mail
 	    }
@@ -167,7 +167,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	{
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/acceptFriendRequest',
+	    '/acceptFriendRequest',
 	    {
 	    	friend:friend,
 	    	user:user,
@@ -180,7 +180,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	{
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/delFriendRequest',
+	    '/delFriendRequest',
 	    {
 	    	from:from,
 	    	to:to
@@ -192,7 +192,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	{
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/countFriendRequest',
+	    '/countFriendRequest',
 	    {
 	    	mail:mail
 	    }
@@ -203,7 +203,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	{
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/removeFriend',
+	    '/removeFriend',
 	    {
 	    	user:user,
 	    	friend:friend
@@ -215,7 +215,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	{
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/fetchFriends',
+	    '/fetchFriends',
 	    {
 	    	user:mail
 	    }
@@ -226,7 +226,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	{
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/countFriends',
+	    '/countFriends',
 	    {
 	    	user:mail
 	    }
@@ -237,7 +237,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	{
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/setProfilePrivacy',
+	    '/setProfilePrivacy',
 	    {
 	    	mail:mail,
 	    	type:'profile',
@@ -251,7 +251,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	{
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/getProfilePrivacy',
+	    '/getProfilePrivacy',
 	    {
 	    	mail:mail,
 	    	type:'profile'
@@ -264,7 +264,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	{
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/setPostPrivacy',
+	    '/setPostPrivacy',
 	    {
 	    	mail:mail,
 	    	privacy:privacy
@@ -276,7 +276,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	{
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/getPostPrivacy',
+	    '/getPostPrivacy',
 	    {
 	    	mail:mail
 	    }
@@ -287,7 +287,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	{
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/fetchChats',
+	    '/fetchChats',
 	    {
 	    	mail:mail
 	    }
@@ -298,7 +298,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	{
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/countChat',
+	    '/countChat',
 	    {
 	    	mail:mail
 	    }
@@ -309,7 +309,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	{
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/selfPosts',
+	    '/selfPosts',
 	    {
 	    	mail:mail
 	    }
@@ -320,7 +320,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	{
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/delPost',
+	    '/delPost',
 	    {
 	    	id:id
 	    }
@@ -331,7 +331,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	{
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/notifications',
+	    '/notifications',
 	    {
 	    	mail:mail
 	    }
@@ -342,7 +342,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	{
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/getPost',
+	    '/getPost',
 	    {
 	    	id:id,
 	    	mail:mail
@@ -354,7 +354,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	{
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/countNotify',
+	    '/countNotify',
 	    {
 	    	mail:mail
 	    }

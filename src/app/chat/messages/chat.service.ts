@@ -4,7 +4,7 @@ import{Observable,Subject} from 'rxjs';
 import{tap,take} from 'rxjs/operators';
 @Injectable({providedIn:'root'})
 export class ChatService {
-    private url = 'http://localhost:3000';
+    private url = '';
     private socket;
      getFriends=new Subject<string>();
      getChat=new Subject<string>();
