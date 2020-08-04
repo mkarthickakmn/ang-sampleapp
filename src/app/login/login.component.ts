@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from './auth.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Subscription} from 'rxjs';
-// import {ChatService} from '../chat/messages/chat.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
