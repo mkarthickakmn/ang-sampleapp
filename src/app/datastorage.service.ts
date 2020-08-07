@@ -114,7 +114,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	{
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/unlikePost',
+	    '/unlikePost',
 	    {
 	    	post_id:id,
 	    	post_mail:post_mail,

@@ -6,7 +6,7 @@
     <span *ngIf="isLogin" routerLink="/addFriends" matBadge="{{requestCount}}" matBadgePosition="above" 
       matBadgeColor="accent" style="cursor: pointer;">Friends|</span>
     <span *ngIf="isLogin" routerLink="/profile" style="cursor: pointer;">profile|</span>
-    <span *ngIf="isLogin&&user"> ( {{user}} ) </span>
+    <!-- <span *ngIf="isLogin&&user"> ( {{user}} ) </span> -->
     <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
       <mat-icon>more_vert</mat-icon>
     </button>
