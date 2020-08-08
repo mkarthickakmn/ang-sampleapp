@@ -1,10 +1,13 @@
 const express = require('express');
+const favicon = require('express-favicon');
 const path = require('path');
 var fs=require('fs');
 var bodyParser = require('body-parser');
 const app = express();
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+
+app.use(favicon(__dirname + '/chatter_box.png'));
 // Serve static files....
 app.use(express.static(__dirname + '/dist/sample01'));
 
