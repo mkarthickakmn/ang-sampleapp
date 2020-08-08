@@ -14,6 +14,11 @@
     display: none;
 }
 
+.image-upload
+{
+    margin-bottom: 20px;
+}
+
 .image-upload img
 {
     width: 80px;

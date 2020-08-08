@@ -3,3 +3,22 @@
      Every toolbar row uses a flexbox row layout. */
   flex: 1 1 auto;
 }
+
+.icons
+{
+	margin-right: 2%;
+}
+
+.user
+{
+	border:2px solid white;
+	border-radius : 10px;
+	padding:1%;
+}
+
+.example-tooltip-red
+{
+	background:gold;
+	color: darkgray;
+	font-size: 16px;
+}

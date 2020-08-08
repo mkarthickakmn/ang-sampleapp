@@ -66,7 +66,6 @@ export class LoginComponent implements OnInit,OnDestroy {
         this.sub3=this.auth.login(username,password).subscribe(data=>{
            this.error=null;
            this.sub4=this.auth.setUser().subscribe(data=>{
-             // this.chat.newUser(username);
              this.router.navigate(['/home']);
            });
            
@@ -103,6 +102,12 @@ export class LoginComponent implements OnInit,OnDestroy {
        this._snackBar.openFromComponent(SnackbarComponent, {
               duration:2000,
             });
+  }
+
+  cancel()
+  {
+    this.reg=!this.reg;
+    this.ngOnInit();
   }
 
   ngOnDestroy()

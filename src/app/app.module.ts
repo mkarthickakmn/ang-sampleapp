@@ -31,6 +31,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTreeModule} from '@angular/material/tree';
+import {TooltipPosition} from '@angular/material/tooltip';
 import { HeaderComponent } from './header/header.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { LoginComponent } from './login/login.component';
@@ -51,6 +52,7 @@ import { PrivacyComponent } from './profile/privacy/privacy.component';
 import { AutofocusDirective } from './shared/autofocus.directive';
 import { UploadsComponent } from './profile/uploads/uploads.component';
 import { NotificationsComponent } from './notifications/notifications.component';
+
 @NgModule({
   declarations: [
     AppComponent,

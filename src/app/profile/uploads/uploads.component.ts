@@ -33,7 +33,7 @@ export class UploadsComponent implements OnInit {
   ngOnInit(): void {
     this.user=this.auth.getUser();
      
-
+console.log(this.user);
     if(this.user)
     {
       this.fetchPosts();
@@ -72,9 +72,11 @@ export class UploadsComponent implements OnInit {
 
   fetchPosts()
   {
+    console.log("fetch");
   	this.sub1=this.datastorage.selfPosts(this.user.mail).
         subscribe(data=>{
            this.posts=data;
+           console.log(data);
         });
   }
 

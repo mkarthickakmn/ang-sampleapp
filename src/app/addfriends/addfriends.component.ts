@@ -6,6 +6,7 @@ import {DataStorageService} from '../datastorage.service';
 import{AuthService} from '../login/auth.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import{Notification} from '../shared/notification.service';
+import{Router} from '@angular/router';
 @Component({
   selector: 'app-addfriends',
   templateUrl: './addfriends.component.html',
@@ -14,7 +15,7 @@ import{Notification} from '../shared/notification.service';
 export class AddfriendsComponent implements OnInit {
 
   constructor(private datastorage:DataStorageService,private auth:AuthService,
-    private _snackBar: MatSnackBar,private notify:Notification) { }
+    private _snackBar: MatSnackBar,private notify:Notification,private route:Router) { }
   
   viewfriendDetails:any=[];
   panelOpenState = false;
@@ -27,6 +28,7 @@ export class AddfriendsComponent implements OnInit {
   filteredOptions: Observable<string[]>;
   list:any=[];
   req:string="";
+  search:boolean=true;
   count:number;
   private sub1:Subscription;
   private sub2:Subscription;
@@ -63,12 +65,16 @@ export class AddfriendsComponent implements OnInit {
     this.filteredOptions = this.myControl.valueChanges.pipe(
       
       map(value => this._filter(value)),tap(data=>{
-        if(data&&data.length>0)
+        if(data&&data.length>0&&this.myControl.value==data[0].name)
         {
           this.friend=data[0].mail;
+          this.search=false;
         }
+        else
+          this.search=true;
       })
     );
+    this.notify.getPage.next(this.route.url);
   }
 
   viewList()
@@ -84,6 +90,7 @@ export class AddfriendsComponent implements OnInit {
 
   openFriends()
   {
+    console.log(this.myControl.value);
     this.getfriend="";
     this.sub4=this.datastorage.viewFriend(this.auth.getUser().mail,this.friend).
       subscribe(data=>{

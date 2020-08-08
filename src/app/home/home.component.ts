@@ -10,6 +10,8 @@ import{HomeService} from './HomeService.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Subscription} from 'rxjs';
 import{Notification} from '../shared/notification.service';
+import {Router} from '@angular/router';
+
 // import{ChatService} from '../chat/messages/chat.service';
 @Component({
   selector: 'app-home',
@@ -20,7 +22,7 @@ export class HomeComponent implements OnInit,OnDestroy {
 
   constructor(private _bottomSheet: MatBottomSheet,private datastorage:DataStorageService,
     private auth:AuthService,private homeService:HomeService,private _snackBar: MatSnackBar,
-    private notify:Notification) {}
+    private notify:Notification,private route:Router) {}
    image:any='';
   uploadpost:FormGroup;
   user:any=null;
@@ -33,7 +35,7 @@ export class HomeComponent implements OnInit,OnDestroy {
 
   ngOnInit(): void {
     this.user=this.auth.getUser();
-     
+    this.notify.getPage.next(this.route.url)
      this.datastorage.countChat(this.user.mail).subscribe(count=>{
           this.notify.getChatCount.next(count.count);  
       })

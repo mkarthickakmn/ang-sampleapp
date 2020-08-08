@@ -17,6 +17,7 @@ var MongoClient = require('mongodb').MongoClient;
 var mongodb = require('mongodb');
 var dbo;
 var url = process.env.MONGODB_URL;
+// var url="mongodb://127.0.0.1:27017"
 MongoClient.connect(url ,{ useUnifiedTopology: true }, function(err, db) {
   if (err) throw err;
   dbo= db.db('chatter_box');
@@ -24,7 +25,7 @@ MongoClient.connect(url ,{ useUnifiedTopology: true }, function(err, db) {
    
 });
 // default Heroku PORT
-var server=app.listen((process.env.PORT),()=>{
+var server=app.listen((process.env.PORT||3000),()=>{
 	console.log("connected");
 });
 var users=[];

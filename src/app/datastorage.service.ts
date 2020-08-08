@@ -307,6 +307,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 
 	selfPosts(mail:string)
 	{
+		console.log("hi");
 		return this.http
 	  	.post<any>(
 	    '/selfPosts',

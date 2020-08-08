@@ -17,10 +17,10 @@ constructor(private auth:AuthService,
   private notify:Notification,private datastorage:DataStorageService,private route:Router){}
   title = 'Chatterbox';
   isLogin:boolean=false;
+  path:string;
   private sub:Subscription;
   ngOnInit():void
   {
-
   //   this.chat.receiveMsg().subscribe(data=>{
   //    if(this.route.url!='/chat')
   //       this.datastorage.countChat(this.auth.getUser().mail).subscribe(count=>{
@@ -42,7 +42,6 @@ constructor(private auth:AuthService,
   //     })  
   // })
 
-  
     this.sub=this.auth.isLogged.subscribe(data=>{
         if(data)
           this.isLogin=true;

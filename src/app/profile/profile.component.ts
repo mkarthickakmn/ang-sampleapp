@@ -2,6 +2,9 @@ import { Component,Inject, OnInit,ChangeDetectorRef,OnDestroy } from '@angular/c
 import {MediaMatcher} from '@angular/cdk/layout';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import{AuthService} from '../login/auth.service';
+import {Router} from '@angular/router';
+import {Notification} from '../shared/notification.service';
+
 export interface DialogData {
   name: string;
 }
@@ -16,11 +19,11 @@ export class ProfileComponent implements  OnDestroy,OnInit{
   mobileQuery: MediaQueryList;
   changepwd:boolean=false;
   i:number=0;
-  fillerNav=["View Profile","Edit Profile","change password","privacy","View ur uploads"];
+  fillerNav=["View Profile","Edit Profile","change password","View ur uploads","privacy"];
   private _mobileQueryListener: () => void;
 
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,
-    public dialog: MatDialog,private auth:AuthService) {
+    public dialog: MatDialog,private auth:AuthService,private route:Router,private notify:Notification) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -40,6 +43,7 @@ export class ProfileComponent implements  OnDestroy,OnInit{
 
   ngOnInit(): void {
     this.auth.changepwd.subscribe(data=>{this.changepwd=true,this.i=2});
+    this.notify.getPage.next(this.route.url);
   }
 
   ngOnDestroy(): void {

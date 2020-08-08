@@ -34,7 +34,11 @@ export class BottomSheetComponent implements OnInit,OnDestroy {
   
   changeListener($event) : void {
   this.readThis($event.target);
-}
+  this._snackBar.openFromComponent(SnackbarComponent2, 
+  {
+      duration:2000,
+    });
+  }
 
 readThis(inputValue: any): void {
   var file:File = inputValue.files[0];
@@ -42,16 +46,15 @@ readThis(inputValue: any): void {
   myReader.readAsDataURL(file);
   myReader.onloadend = (e) => {
   this.image = myReader.result;
-  console.log('image');
   }
 
 }
 
 upload()
-	{ 
+  { 
 
     if (this.form.valid)
-		{
+    {
     
       this.form.value.img=this.image;
        this.sub1=this.datastorage.createPost(this.data,this.form.value).
@@ -67,8 +70,8 @@ upload()
 
          });
       
-    }	
-	}
+    }  
+  }
 
      ngOnDestroy()
     {
@@ -84,3 +87,9 @@ upload()
   template: '<h4>post uploaded...</h4>'
 })
 export class SnackbarComponent {}
+
+@Component({
+  selector: 'snack-bar-component-example-snack',
+  template: '<h4>image added</h4>'
+})
+export class SnackbarComponent2 {}

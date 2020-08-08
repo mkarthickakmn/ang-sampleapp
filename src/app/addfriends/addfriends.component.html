@@ -18,7 +18,7 @@
 		      </mat-option>
 		    </mat-autocomplete>
 		  </mat-form-field>
-		  <button color="accent" mat-raised-button (click)="openFriends()">Open friend</button>
+		  <button color="accent" mat-raised-button [disabled]="search" (click)="openFriends()">Open friend</button>
 		</form>   	
     </div>
   </mat-card-content>

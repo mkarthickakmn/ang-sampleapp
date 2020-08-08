@@ -1,12 +1,14 @@
-<img mat-card-image *ngIf="image" src={{image}} alt="pic">
+<div style="padding: 2%">
+	<img mat-card-image *ngIf="image" src={{image}} alt="pic">
 	    <div class="image-upload">
 		    <label for="file-input">
-		        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/></svg><span>upload Pic</span>
+		        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/></svg><b>Browse</b>
 		    </label>
 		    <input id="file-input" (change)="changeListener($event)" 
 		    accept="image/x-png,image/gif,image/jpeg" type="file"/>
+		    <span> : Click on browse to upload Pic</span>
 		</div>
-<form class="example-form" [formGroup]="form" (ngSubmit)="upload()"> 
+	<form class="example-form" [formGroup]="form" (ngSubmit)="upload()"> 
 	  <mat-form-field class="example-full-width">
 	    <mat-label>Caption</mat-label>
 	    <input matInput formControlName="caption" appAutofocus required>
@@ -16,13 +18,14 @@
 	    <mat-label>desc</mat-label>
 		<textarea matInput formControlName="desc" placeholder="It makes me feel..."></textarea>
 	    <mat-icon matSuffix>mode_edit</mat-icon>
- 	 </mat-form-field> 
-      <mat-form-field >
-   		 <mat-label>post</mat-label>
-	    <mat-select matNativeControl formControlName="type" required>
-	      <mat-option value="public">public</mat-option>
-	      <mat-option value="privacy">as per privacy policy</mat-option>
-	    </mat-select>
-   </mat-form-field> 
-	  <button mat-button type="submit" >upload post</button>
-</form>
+ 	   </mat-form-field> 
+       <mat-form-field >
+   		  <mat-label>post privacy</mat-label>
+	      <mat-select matNativeControl formControlName="type" required>
+		      <mat-option value="public">public</mat-option>
+		      <mat-option value="privacy">as per privacy policy</mat-option>
+	      </mat-select>
+	    </mat-form-field> 
+	  	<div><button mat-raised-button style="text-align: center;"type="submit"  color="accent">upload post</button></div>
+	</form>
+</div>

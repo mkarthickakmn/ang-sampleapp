@@ -5,7 +5,7 @@
     <h1 class="example-app-name">My Profile</h1>
     <span class="example-fill-remaining-space"></span>
     <span>
-      <mat-icon aria-hidden="false" style="cursor: pointer;" routerLink="/home" aria-label="Example home icon">home</mat-icon>
+      <mat-icon aria-hidden="false" style="cursor: pointer;" routerLink="/home" matTooltip="Home" matTooltipClass="example-tooltip-red"aria-label="Example home icon">home</mat-icon>
     </span>
   </mat-toolbar>
   <mat-sidenav-container class="example-sidenav-container"
@@ -22,8 +22,8 @@
       <div *ngSwitchCase="0"><app-view-profile></app-view-profile></div>
       <div *ngSwitchCase="1"><app-edit-profile></app-edit-profile></div>
       <div *ngSwitchCase="2"><app-change-pwd *ngIf="changepwd"></app-change-pwd></div>
-      <div *ngSwitchCase="3"><app-privacy></app-privacy></div>
-      <div *ngSwitchCase="4"><app-uploads></app-uploads></div>
+      <div *ngSwitchCase="3"><app-uploads></app-uploads></div>
+      <div *ngSwitchCase="4"><app-privacy></app-privacy></div>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>

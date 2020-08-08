@@ -56,6 +56,7 @@
           <button mat-button matStepperNext type="submit" >Next</button>
         </div>
       </form>
+      <button mat-raised-button color="accent" style="margin-left: 40%" (click)="cancel()">cancel</button>  
     </mat-step>
     <mat-step [stepControl]="secondFormGroup" errorMessage="Address is required.">
       <form [formGroup]="secondFormGroup" >
@@ -85,14 +86,15 @@
           <button mat-button matStepperNext type="submit">Next</button>
         </div>
       </form>
+      <button mat-raised-button color="accent" style="margin-left: 40%" (click)="cancel()">cancel</button>  
     </mat-step>
     <mat-step [stepControl]="thirdFormGroup" errorMessage="password is required.">
       <form [formGroup]="thirdFormGroup" >
         <ng-template matStepLabel>Set Password</ng-template>
         <mat-form-field>
           <mat-label>Password</mat-label>
-          <input matInput type="password" placeholder="password" formControlName="pwd"
-                 required>
+          <input matInput type="password" placeholder="password should not be less than 6 characters" 
+          formControlName="pwd"  required>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Confirm Password</mat-label>
@@ -108,6 +110,7 @@
         (thirdFormGroup.value.cnf&&thirdFormGroup.value.pwd)">Next</button>
         </div>
       </form>
+      <button mat-raised-button color="accent" style="margin-left: 40%" (click)="cancel()">cancel</button>  
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Done</ng-template>
@@ -120,5 +123,4 @@
       </div>
     </mat-step>
   </mat-horizontal-stepper>
-  <button mat-raised-button color="accent" (click)="reg=!reg">back</button>  
 </div>

@@ -2,22 +2,23 @@
   <mat-toolbar-row>
     <span>Chatter Box</span>
     <span class="example-fill-remaining-space"></span>
-    <span *ngIf="isLogin" routerLink="/home" style="cursor: pointer;">Home|</span>
-    <span *ngIf="isLogin" routerLink="/addFriends" matBadge="{{requestCount}}" matBadgePosition="above" 
-      matBadgeColor="accent" style="cursor: pointer;">Friends|</span>
-    <span *ngIf="isLogin" routerLink="/profile" style="cursor: pointer;">profile|</span>
-    <!-- <span *ngIf="isLogin&&user"> ( {{user}} ) </span> -->
+    <span *ngIf="isLogin" class="icons" routerLink="/home" style="cursor: pointer;"><mat-icon  [ngStyle]="styleObject('/home')" matTooltip="Home" matTooltipClass="example-tooltip-red">home</mat-icon></span>
+    <span *ngIf="isLogin" class="icons" routerLink="/addFriends" matBadge="{{requestCount}}" matBadgePosition="above" 
+      matBadgeColor="accent" style="cursor: pointer;"><mat-icon [ngStyle]="styleObject('/addFriends')" matTooltip="Add Friends" matTooltipClass="example-tooltip-red">group_add</mat-icon></span>
+    <span *ngIf="isLogin&&user" routerLink="/profile" matTooltip="Profile" matTooltipClass="example-tooltip-red" [ngStyle]="styleObject('/profile')"style="cursor: pointer;" class="user">{{user}}</span>
     <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
       <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
       <button mat-menu-item>
+        <mat-icon>help</mat-icon>
         <span>help</span>
       </button>
       <button mat-menu-item  (click)="logout()">
-        <mat-icon>dialpad</mat-icon>
+        <mat-icon>power_settings_new</mat-icon>
         <span>logout</span>
       </button>
     </mat-menu>
   </mat-toolbar-row>
 </mat-toolbar>
+
