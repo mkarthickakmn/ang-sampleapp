@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit,OnDestroy {
   reg:boolean=false;
   obj:any;
   error:string=null;
+  loading:boolean;
   constructor(private fb: FormBuilder,private router:Router,private auth:AuthService,
     private _snackBar: MatSnackBar) {
   }
@@ -68,6 +69,7 @@ export class LoginComponent implements OnInit,OnDestroy {
 
   async onSubmit() {
     this.error=null;
+    this.loading=true;
     this.formSubmitAttempt = false;
     if (this.form.valid) {
   
@@ -77,10 +79,12 @@ export class LoginComponent implements OnInit,OnDestroy {
            this.error=null;
            this.sub4=this.auth.setUser().subscribe(data=>{
              // this.chat.newUser(username);
+             this.loading=false;
              this.router.navigate(['/home']);
            });
            
          },err=>{
+             this.loading=false;
              this.error=err;
          });
         // this.auth.login(username,password);

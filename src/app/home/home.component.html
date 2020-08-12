@@ -1,3 +1,4 @@
+
 <mat-card style="margin-bottom: 2%">
   <mat-card-content>
     <div class="upload">
@@ -5,6 +6,7 @@
     </div>
   </mat-card-content>
 </mat-card>
+<app-loader *ngIf="loading"></app-loader>
 <mat-card class="example-card" *ngFor="let post of posts">
   <mat-card-header style="margin-bottom:5%">
   <div mat-card-avatar ><img class="img1" src={{post.image}}></div>

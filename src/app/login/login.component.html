@@ -1,4 +1,3 @@
-
 <mat-card class="log" *ngIf="!reg">
   <mat-card-content>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
@@ -24,6 +23,7 @@
     </form>
   </mat-card-content>
 </mat-card>
+<app-loader *ngIf="loading"></app-loader>  
 <div class="reg" *ngIf="reg">
  <h2 style="text-align: center">Register Your Account</h2>
   <mat-horizontal-stepper linear #stepper  >

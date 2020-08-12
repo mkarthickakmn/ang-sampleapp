@@ -2282,6 +2282,7 @@ app.post('/notifications',function(req,res)
 	   				function likePost()	
 					{ dbo.collection("posts").findOne({_id:new mongodb.ObjectID(notification[i].post_id)},function(err, post) 
 						{
+							if(post)
 							 dbo.collection("users").findOne({mail:post.mail},function(err, user) 
 							{
 								if(user.mail==req.body.mail)
@@ -2297,6 +2298,12 @@ app.post('/notifications',function(req,res)
 				   				 i++;
 				   				 fetch_notify(i)
 							})
+							else
+							{
+								notify={};
+			   				 	i++;
+			   				    fetch_notify(i)
+							}
 
 						})
 					}

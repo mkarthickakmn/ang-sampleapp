@@ -25,9 +25,12 @@ export class NotificationsComponent implements OnInit,OnDestroy {
     ) { }
 
  notifications:any=[];
+ loading:boolean;
   ngOnInit(): void {
+    this.loading=true;
   	this.datastorage.getNotifications(this.auth.getUser().mail).subscribe(data=>{
   		console.log(data);
+      this.loading=false;
   		this.notifications=data;
   	})
 

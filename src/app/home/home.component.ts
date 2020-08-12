@@ -27,6 +27,7 @@ export class HomeComponent implements OnInit,OnDestroy {
   uploadpost:FormGroup;
   user:any=null;
   posts:any;
+  loading:boolean;
   private sub1:Subscription;
   private sub2:Subscription;
   private sub3:Subscription;
@@ -34,6 +35,7 @@ export class HomeComponent implements OnInit,OnDestroy {
   private sub5:Subscription;
 
   ngOnInit(): void {
+    this.loading=true;
     this.user=this.auth.getUser();
     this.notify.getPage.next(this.route.url)
      this.datastorage.countChat(this.user.mail).subscribe(count=>{
@@ -102,6 +104,7 @@ export class HomeComponent implements OnInit,OnDestroy {
     this.sub1=this.datastorage.fetchPosts(this.user.mail).
         subscribe(data=>{
           this.posts=data;
+          this.loading=false;
           console.log(data);
         });
   }

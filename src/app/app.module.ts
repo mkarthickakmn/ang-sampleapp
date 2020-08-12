@@ -19,9 +19,11 @@ import { ViewFriendComponent } from './addfriends/view-friend/view-friend.compon
 import { FetchpostsComponent } from './addfriends/view-friend/fetchposts/fetchposts.component';
 import { PrivacyComponent } from './profile/privacy/privacy.component';
 import { AutofocusDirective } from './shared/autofocus.directive';
-import { UploadsComponent } from './profile/uploads/uploads.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
+import { LoaderComponent } from './shared/loader/loader.component';
+import { MyuploadsComponent } from './profile/myuploads/myuploads.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,7 +41,9 @@ import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
     PrivacyComponent,
     AutofocusDirective,
     NotificationsComponent,
-    PagenotfoundComponent
+    PagenotfoundComponent,
+    LoaderComponent,
+    MyuploadsComponent
   ],
   imports: [
     BrowserModule,

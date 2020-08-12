@@ -11,13 +11,13 @@ import {Subscription} from 'rxjs';
 import{Notification} from '../../shared/notification.service';
 
 @Component({
-  selector: 'app-uploads',
-  templateUrl: './uploads.component.html',
-  styleUrls: ['./uploads.component.css']
+  selector: 'app-myuploads',
+  templateUrl: './myuploads.component.html',
+  styleUrls: ['./myuploads.component.css']
 })
-export class UploadsComponent implements OnInit {
+export class MyuploadsComponent implements OnInit {
 
-  constructor(private _bottomSheet: MatBottomSheet,private datastorage:DataStorageService,
+   constructor(private _bottomSheet: MatBottomSheet,private datastorage:DataStorageService,
     private auth:AuthService,private homeService:HomeService,private _snackBar: MatSnackBar,
     private notify:Notification) {}
    image:any='';
@@ -33,7 +33,7 @@ export class UploadsComponent implements OnInit {
   ngOnInit(): void {
     this.user=this.auth.getUser();
      
-console.log(this.user);
+
     if(this.user)
     {
       this.fetchPosts();
@@ -72,11 +72,9 @@ console.log(this.user);
 
   fetchPosts()
   {
-    console.log("fetch");
   	this.sub1=this.datastorage.selfPosts(this.user.mail).
         subscribe(data=>{
            this.posts=data;
-           console.log(data);
         });
   }
 
