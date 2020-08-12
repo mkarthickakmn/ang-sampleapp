@@ -345,7 +345,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	{
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/changeVisibility',
+	    '/changeVisibility',
 	    {
 	    	mail:mail
 	    }
