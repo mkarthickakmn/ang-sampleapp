@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from './auth.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Subscription} from 'rxjs';
+// import {ChatService} from '../chat/messages/chat.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -28,7 +29,7 @@ export class LoginComponent implements OnInit,OnDestroy {
   private sub2:Subscription;
   private sub3:Subscription;
   private sub4:Subscription;
-
+  private sub5:Subscription;
   async ngOnInit() {
 
     this.form = this.fb.group({
@@ -54,6 +55,15 @@ export class LoginComponent implements OnInit,OnDestroy {
       cnf: ['', Validators.required]
     });
 
+     this.sub5=this.auth.isLogged.subscribe(data=>{
+      if(data)
+      {
+        console.log(data);      
+        this.router.navigate(['/home']);
+      }
+      
+    })
+
   }
 
   async onSubmit() {
@@ -66,6 +76,7 @@ export class LoginComponent implements OnInit,OnDestroy {
         this.sub3=this.auth.login(username,password).subscribe(data=>{
            this.error=null;
            this.sub4=this.auth.setUser().subscribe(data=>{
+             // this.chat.newUser(username);
              this.router.navigate(['/home']);
            });
            
@@ -120,6 +131,8 @@ export class LoginComponent implements OnInit,OnDestroy {
       this.sub3.unsubscribe();
     if(this.sub4)
       this.sub4.unsubscribe();
+    if(this.sub5)
+      this.sub5.unsubscribe();
   }
 
 }

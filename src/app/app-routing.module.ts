@@ -7,13 +7,18 @@ import{AddfriendsComponent} from './addfriends/addfriends.component';
 import{ProfileComponent} from './profile/profile.component';
 // import{ChatComponent} from './chat/chat.component';
 import{NotificationsComponent} from './notifications/notifications.component';
+import{PagenotfoundComponent} from './pagenotfound/pagenotfound.component';
+
+import {AuthGuard} from './auth.guard';
+
 const appRoutes:Routes=[{path:'',redirectTo:'login',pathMatch:'full'},
 						{path:'login',component:LoginComponent},
-						{path:'home',component:HomeComponent},
-						{path:'addFriends',component:AddfriendsComponent},
-						{path:'profile',component:ProfileComponent},
-						// {path:'chat',component:ChatComponent},
-						{path:'notifications',component:NotificationsComponent},
+						{path:'home',component:HomeComponent,canActivate:[AuthGuard]},
+						{path:'addFriends',component:AddfriendsComponent,canActivate:[AuthGuard]},
+						{path:'profile',component:ProfileComponent,canActivate:[AuthGuard]},
+						// {path:'chat',component:ChatComponent,canActivate:[AuthGuard]},
+						{path:'notifications',component:NotificationsComponent,canActivate:[AuthGuard]},
+						{path:'**',component:PagenotfoundComponent}
 						]
 							
 						

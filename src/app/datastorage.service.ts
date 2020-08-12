@@ -124,15 +124,17 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	  )
 	}
 
-	sharePost(post:any,mail:string,user:string)
+	sharePost(post:any,mail:string,user:string,id:string)
 	{
+		console.log(id);
 		return this.http
 	  	.post<any>(
 	    '/sharePost',
 	    {
 	    	post:post,
 	    	mail:mail,
-	    	user:user
+	    	user:user,
+	    	id:id
 	    }
 	  )
 	}
@@ -333,6 +335,17 @@ constructor(private http:HttpClient,private auth:AuthService){}
 		return this.http
 	  	.post<any>(
 	    '/notifications',
+	    {
+	    	mail:mail
+	    }
+	  )	
+	}
+
+	changeVisibility(mail:string)
+	{
+		return this.http
+	  	.post<any>(
+	    'http://localhost:3000/changeVisibility',
 	    {
 	    	mail:mail
 	    }

@@ -4,6 +4,8 @@ const path = require('path');
 var fs=require('fs');
 var bodyParser = require('body-parser');
 const app = express();
+// const socketIO = require('socket.io');
+// const io = socketIO(server);
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
@@ -35,6 +37,95 @@ var users=[];
 var notifications=[];
 var notify="";
 
+//chat
+// io.on('connection', (socket) => {
+//  	console.log('hi');
+//  	socket.on('new_user', email => {
+//  		console.log("user connected");
+// 	    users[email] = socket.id;
+//     	console.log(socket.id+" "+email);
+//     	socket.broadcast.emit("friendsjoined",{mail:email,connection:'online'});
+//   })
+
+//  	socket.on('send_msg', data => {
+//  		dbo.collection("messages").insertOne({...data,visibility:'unseen'}, function(err, messages) 
+// 			{
+// 			    if (err) throw err;
+// 			    console.log("msg inserted successfully");
+
+// 			    dbo.collection("chats").findOne({$or:[{p1:data.from,p2:data.to},{p2:data.from,p1:data.to}]}, function(err, result) 
+// 				{
+
+// 					if(!result)
+// 					    dbo.collection("chats").insertOne({p1:data.from,p2:data.to,time:new Date().getTime()}, function(err, chats) 
+// 						{
+// 						    if (err) throw err;
+// 						    console.log('chats:');
+// 						    console.log(chats);
+						   
+// 						    if(users[data.to])
+// 							socket.broadcast.to(users[data.to]).emit("send-message",data);
+// 						})
+// 					else
+// 					 	dbo.collection("chats").updateOne({$or:[{p1:data.from,p2:data.to},{p2:data.from,p1:data.to}]},{$set:{time:new Date().getTime()}}, function(err, chats) 
+// 						{
+// 						    if (err) throw err;
+// 						    if(users[data.to])
+// 							{
+							
+// 								socket.broadcast.to(users[data.to]).emit("send-message",data);				
+// 							}
+// 						})
+// 				})
+				
+// 			})
+//   })
+
+//  	socket.on('get_msg', data => {
+
+//  		dbo.collection('messages').find({$or:[{from:data.from,to:data.to},{from:data.to,to:data.from}]}).toArray(function(err,messages)
+// 	  	{
+// 	  		if(err) throw err;
+
+// 	  		dbo.collection('messages').updateMany({from:data.from,to:data.to},
+// 	  			{$set:{visibility:'seen'}},function(err,update)
+// 		  	{
+// 			  		socket.emit("chat-message",messages);
+// 	  		})
+// 	  	})
+//   })
+
+// 	socket.on('update_msg', data => {
+ 	
+//   		dbo.collection('messages').updateMany({...data},
+//   			{$set:{visibility:'seen'}},function(err,update)
+// 	  	{
+// 		  		socket.emit("messageSeen",update);
+//   		})
+//   })
+
+// 	socket.on('sendFriendReq', data => {
+// 		console.log(data+" "+users[data]);
+
+// 		socket.broadcast.to(users[data]).emit("getFriendReq",{mail:data});
+// 	})
+
+
+// 	socket.on('likePost', data => {
+// 		console.log(data+"like "+users[data]);
+
+// 		socket.broadcast.to(users[data]).emit("getlikePost",{mail:data});
+// 	})
+ 	
+
+//   	socket.on('disconnected', email => {
+
+//   		console.log(email+" disconnected");	
+// 		delete users[email];
+// 		socket.broadcast.emit("frienddisconnected",{mail:email,connection:'offline'});
+//   })
+
+// });
 
 app.post('/insertUser',(req,res)=>{
 	var user=req.body.user;
@@ -114,7 +205,7 @@ app.post('/createPost',function(req,res)
 				{
 				    if (err) throw err;
 				    console.log("post inserted with privacy successfully");
-				    post_notify("privacy");
+				    post_notify(privacy.post_privacy,result.insertedId);
 				    res.send(result);
 				});
 			else
@@ -126,7 +217,7 @@ app.post('/createPost',function(req,res)
 				{
 				    if (err) throw err;
 				    console.log("post inserted with privacy successfully");
-				    post_notify("privacy");
+				    post_notify("Show to everyone",result.insertedId);
 				    res.send(result);
 				});
 			}
@@ -141,25 +232,71 @@ app.post('/createPost',function(req,res)
 			{
 			    if (err) throw err;
 			    console.log("post inserted successfully");
-			     post_notify("public");
+			    post_notify("public",result.insertedId);
 			    res.send(result);
 			});
 	}
 
-	function post_notify(type)
+	function post_notify(type,id)
 	{
-		dbo.collection("posts").findOne({mail:req.body.mail,
-		  	post:{caption:req.body.post.caption,desc :req.body.post.desc,img:req.body.post.img},
-		  	type:req.body.post.type},function(err,post){
-		  		if(post)
-		  		{
-		  			dbo.collection("notifications").
-					insertOne({post_id:post._id,post_mail:req.body.mail,user:req.body.mail,type:type,visibility:"unseen",time:new Date().getTime()},function(err,notify){
-						console.log("post notifications inserted");
-					})
-				}
-		})
+		if(type=="Hide from everyone")
+			{
+	  			dbo.collection("notifications").
+				insertOne({post_id:id,post_mail:req.body.mail,user:req.body.mail,type:type,visibility:"unseen",time:new Date().getTime()},function(err,notify){
+					console.log("post notifications inserted");
+				})
+					
+			}
+		else if(type=="public"||type=="Show to everyone")
+			{
+				dbo.collection("users").find().toArray(function(err,friends){
+					if(friends.length>0)
+					{
+						function fetch_friends(i)
+						{
+							if(i<friends.length)
+							{
+								dbo.collection("notifications").
+								insertOne({post_id:id.toString(),post_mail:req.body.mail,user:friends[i].mail,type:type,visibility:"unseen",time:new Date().getTime()},function(err,notify){
+									i++;
+									fetch_friends(i);
+								})
+								
+							}
 
+						}
+						fetch_friends(0);
+					}
+				})
+			}
+		else if(type=="Show to Friends only")
+			{
+				dbo.collection("friends").find({user:req.body.mail}).toArray(function(err,friends){
+					if(friends.length>0)
+					{
+						function fetch_friends(i)
+						{
+							if(i<friends.length)
+							{
+								dbo.collection("notifications").
+								insertOne({post_id:id.toString(),post_mail:req.body.mail,user:friends[i].friend,type:type,visibility:"unseen",time:new Date().getTime()},function(err,notify){
+									i++;
+									fetch_friends(i);
+								})
+								
+							}
+							else
+							{
+								dbo.collection("notifications").
+								insertOne({post_id:id.toString(),post_mail:req.body.mail,user:req.body.mail,type:type,visibility:"unseen",time:new Date().getTime()},function(err,notify){
+									console.log("post notifications inserted");									
+								})
+							}
+						}
+						fetch_friends(0);
+					}
+				})
+			}
 	}
 	
 })
@@ -733,7 +870,6 @@ app.post('/unlikePost',function(req,res)
 	   	
 })
 
-
 app.post('/sharePost',function(req,res)
 {
 	dbo.collection("users").findOne({mail:req.body.user},function(err, user) 
@@ -743,13 +879,75 @@ app.post('/sharePost',function(req,res)
 	  insertOne({mail:req.body.user,sharedFrom:req.body.mail,privacy:user.post_privacy,post:req.body.post,time:new Date().getTime()}, function(err, posts) 
 		{
 		    if (err) throw err;
-		    notify=req.body.user+" shared "+req.body.mail+"'s post";
-		    notifications.push(notify);
+		    post_notify(user.post_privacy,req.body.id,req.body.mail)
 		  	res.send(posts);
 		    
 		});
 	});
+
+	function post_notify(type,id,sharedFrom)
+	{
+		if(type=="Hide from everyone")
+			{
+	  			dbo.collection("notifications").
+				insertOne({post_id:id.toString(),sharedfrom:sharedFrom,sharedby:req.body.user,user:req.body.mail,type:type,visibility:"unseen",time:new Date().getTime()},function(err,notify){
+					console.log("post notifications inserted");
+				})
+					
+			}
+		else if(type=="public"||type=="Show to everyone")
+			{
+				dbo.collection("users").find().toArray(function(err,friends){
+					if(friends.length>0)
+					{
+						function fetch_friends(i)
+						{
+							if(i<friends.length)
+							{
+								dbo.collection("notifications").
+								insertOne({post_id:id.toString(),sharedfrom:sharedFrom,sharedby:req.body.user,user:friends[i].mail,type:type,visibility:"unseen",time:new Date().getTime()},function(err,notify){
+									i++;
+									fetch_friends(i);
+								})
+								
+							}
+
+						}
+						fetch_friends(0);
+					}
+				})
+			}
+		else if(type=="Show to Friends only")
+			{
+				dbo.collection("friends").find({user:req.body.mail}).toArray(function(err,friends){
+					if(friends.length>0)
+					{
+						function fetch_friends(i)
+						{
+							if(i<friends.length)
+							{
+								dbo.collection("notifications").
+								insertOne({post_id:id.toString(),sharedfrom:sharedFrom,sharedby:req.body.user,user:friends[i].friend,type:type,visibility:"unseen",time:new Date().getTime()},function(err,notify){
+									i++;
+									fetch_friends(i);
+								})
+								
+							}
+							else
+							{
+								dbo.collection("notifications").
+								insertOne({post_id:id.toString(),sharedfrom:sharedFrom,sharedby:req.body.user,user:req.body.mail,type:type,visibility:"unseen",time:new Date().getTime()},function(err,notify){
+									console.log("post notifications inserted");									
+								})
+							}
+						}
+						fetch_friends(0);
+					}
+				})
+			}
+	}
 })
+
 
 
 app.post('/getFriends',function(req,res)
@@ -1313,7 +1511,8 @@ app.post('/sendFriendRequests',function(req,res)
 	    if (err) throw err;
 	   
 	   console.log("friend req send successfully");
-	   res.send(friends);
+		req_notify(req.body,"sent");
+		res.send(friends);
 	});
 })
 
@@ -1393,6 +1592,7 @@ app.post('/fetchFriendRequests',function(req,res)
 	});
 })
 
+
 app.post('/acceptFriendRequest',function(req,res)
 {
 
@@ -1406,11 +1606,11 @@ app.post('/acceptFriendRequest',function(req,res)
 		   	
 		   	console.log('friends inserted');
 		   	 dbo.collection("friendrequests").
-		   	 deleteOne({$or:[{from:req.body.user,to:req.body.friend},
-		   	 	{from:req.body.friend,to:req.body.user}]}, function(err, friends) 
+		   	 findOneAndDelete({$or:[{from:req.body.user,to:req.body.friend},
+		   	 	{from:req.body.friend,to:req.body.user}]}, function(err, deleted) 
 				{
 				    if (err) throw err;
-				    console.log("req deleted");
+				    req_notify({from:deleted.value.to,to:deleted.value.from},"accepted")
 				   	res.send(friends);
 				    
 				});	
@@ -1420,6 +1620,23 @@ app.post('/acceptFriendRequest',function(req,res)
 })
 
 
+function req_notify(obj,type)
+{
+	var time=new Date().getTime();
+    dbo.collection("notifications").insertOne({from:obj.from,to:obj.to,request:type,user:obj.from,visibility:'unseen',time:new Date().getTime()},function(err,notify)
+   {
+   		if(err) throw err;
+   		dbo.collection("notifications").insertOne({from:obj.from,to:obj.to,request:type,user:obj.to,visibility:'unseen',time:new Date().getTime()},function(err,notify)
+	   {
+	   		if(err) throw err;
+	   		console.log("req notifications inserted");
+
+	   })
+
+   })
+}
+
+
 app.post('/delFriendRequest',function(req,res)
 {
 
@@ -1427,8 +1644,8 @@ app.post('/delFriendRequest',function(req,res)
 	{
 	    if (err) throw err;
 	    console.log("req deleted");
-	   	res.send(friends);
-	    
+	    req_notify({from:req.body.to,to:req.body.from},"rejected");
+		res.send(friends);	    
 	});
 })
 
@@ -1453,6 +1670,7 @@ app.post('/removeFriend',function(req,res)
 	  deleteOne({ $or: [ {user:req.body.user,friend:req.body.friend},{friend:req.body.user,user:req.body.friend} ] }, function(err, friends) 
 		{
 		    if (err) throw err;
+		    req_notify({from:req.body.user,to:req.body.friend},"remove");
 		    res.send(friends);
 	  });
 	    
@@ -1954,115 +2172,213 @@ app.post('/delPost',function(req,res)
 app.post('/notifications',function(req,res)
 {
 	var notifications=[];
-
+	console.log(req.body.mail);
 	var notify={
 		text:'',
 		time:'',
-		post_id:''
+		post_id:'',
+		visibility:''
 	};
-	 dbo.collection("notifications").find({$or:[{post_mail:req.body.mail,user:req.body.mail},
-	 	{mail:req.body.mail,user:req.body.mail}]}).sort({time:-1}).toArray(function(err, likes) 
+	 // dbo.collection("notifications").find({$or:[{post_mail:req.body.mail,user:req.body.mail},
+	 // 	{mail:req.body.mail,user:req.body.mail},]}).sort({time:-1}).toArray(function(err, notification) 
+	  dbo.collection("notifications").find({$or:[{user:req.body.mail}]}).sort({time:-1}).toArray(function(err, notification) 
 	{
 	    if (err) throw err;
-	   	if(likes.length>0)
+	   	if(notification.length>0)
 	   	{
 	   		function fetch_notify(i)
 	   		{
-	   			if(i<likes.length)
+	   			if(i<notification.length)
 	   			{	
+	   				notify.visibility=notification[i].visibility;
+
+	   				if(notification[i].like)
 	   				 {
-	   				 	dbo.collection("users").findOne({mail:likes[i].mail},function(err, user) 
+
+	   				 	dbo.collection("users").findOne({mail:notification[i].mail},function(err, user) 
 							{
+
 								if(user.mail==req.body.mail)
 									notify.text="You";
 								else	
 									notify.text=user.name;
-								if(likes[i].like==1)
+								if(notification[i].like==1)
 				   				{
 				   					notify.text+=" liked ";
 				   					likePost();
 				   				}
-				   				else 
+				   				else
 				   				{
 				   					notify.text+=" disliked "
 				   					likePost();
 				   				} 
-				   				if(likes[i].like==undefined||!likes[i].like)
-				   				{
-				   					notify.text+=" uploaded a post"
-				   					i++;
-				   					fetch_notify(i);
-				   				}
 
-				   				function likePost()	
-								{ dbo.collection("posts").findOne({_id:new mongodb.ObjectID(likes[i].post_id)},function(err, post) 
-																{
-																	 dbo.collection("users").findOne({mail:post.mail},function(err, user) 
-																	{
-																		if(user.mail==req.body.mail)
-																			notify.text+="your post, ";
-																		else
-																			notify.text+=user.name+"'s post, ";
-														   				 notify.post_id=post._id;	
-																		function formatAMPM(time) {
-																		  var date=new Date(time);
-																		  var hours = date.getHours();
-																		  var minutes = date.getMinutes();
-																		  var ampm = hours >= 12 ? 'pm' : 'am';
-																		  hours = hours % 12;
-																		  hours = hours ? hours : 12; // the hour '0' should be '12'
-																		  minutes = minutes < 10 ? '0'+minutes : minutes;
-																		  var strTime = hours + ':' + minutes + ' ' + ampm;
-																		  notify.text+=" ,time: "+strTime;
-																		}
-								
-																		const monthNames = ["January", "February", "March", "April", "May", "June",
-																	        "July", "August", "September", "October", "November", "December"];
-																	    let dateObj = new Date(post.time);
-																	    let month = monthNames[dateObj.getMonth()];
-																	    let day = String(dateObj.getDate()).padStart(2, '0');
-																	    let year = dateObj.getFullYear();
-																	    let output = day  + ' '+ month  + ' ' + year;
-																		notify.text+="posted on "+output;
-																		(formatAMPM(post.time));
-																		
-																		 var t=Math.floor((new Date().getTime()-likes[i].time)/60000);
-																		 if(t>=60)
-																		 	 {
-																		 	 	t=Math.floor((new Date().getTime()-likes[i].time)/(60*60000));
-																		 	 	if(t>=24)
-																		 	 		t=Math.floor((new Date().getTime()-likes[i].time)/(60*60000*24))+" days";
-																		 	 	else
-																		 	 		t+=" hrs";
-																		 	 }
-																		 else
-																		 	t+=" mins";
-														   				 notify.time=t;
-														   				 notifications.push(notify);
-														   				 notify={};
-														   				 i++;
-														   				 fetch_notify(i)
-																	})
-								
-																})}
+							})
+	   				 }
+   				    else if(notification[i].sharedfrom)
+	   				 {
+		   				 	dbo.collection("users").findOne({mail:notification[i].sharedfrom},function(err, user) 
+								{
+									if(user.mail==req.body.mail)
+										notify.text="Your's post was shared by ";
+									else
+										notify.text=user.name+"'s post was shared by ";
+									notify.post_id=notification[i].post_id;
+									sharepost();
+								})
+	   				 }
+	   				 else if(notification[i].type)
+	   				 {
+		   				 	dbo.collection("users").findOne({mail:notification[i].post_mail},function(err, user) 
+								{
+									if(user.mail==req.body.mail)
+										notify.text="You ";
+									else
+										notify.text=user.name+" ";
+									if(notification[i].type=="public")
+										notify.text+="uploaded a public post, ";
+									else
+									notify.text+="uploaded a  post, ";
+									formatAMPM(notification[i].time);
+									notify.post_id=notification[i].post_id;
+									notifications.push(notify);
+									notify={};
+									i++;
+									fetch_notify(i);
+								})
+	   				 }
+	   				
+	   				 else 
+	   				 {
+	   				 	dbo.collection("users").findOne({mail:notification[i].from},function(err, user) 
+							{
+								if(user.mail==req.body.mail)
+									notify.text="You ";
+								else
+									notify.text=user.name+" ";
+
+								notify.post_id=notification[i].post_id;
+								if(notification[i].request=="sent")
+								{
+									notify.text+=notification[i].request+" a friend request to ";
+									friend_request();
+
+								}
+								else if(notification[i].request=="remove")
+								{
+									notify.text+="are no longer friend to ";
+									friend_request();
+
+								}
+								else
+								{
+									notify.text+=notification[i].request+" a friend request from ";
+									friend_request();
+								}
+
 							})
 	   				 }
 	   			
-	   			
+	   				function likePost()	
+					{ dbo.collection("posts").findOne({_id:new mongodb.ObjectID(notification[i].post_id)},function(err, post) 
+						{
+							 dbo.collection("users").findOne({mail:post.mail},function(err, user) 
+							{
+								if(user.mail==req.body.mail)
+									notify.text+="your post, ";
+								else
+									notify.text+=user.name+"'s post, ";
+				   				 notify.post_id=post._id;	
+
+								formatAMPM(post.time);
+	
+				   				 notifications.push(notify);
+				   				 notify={};
+				   				 i++;
+				   				 fetch_notify(i)
+							})
+
+						})
+					}
+
+					function friend_request()
+					{
+						dbo.collection("users").findOne({mail:notification[i].to},function(err, user) 
+						{
+							if(user.mail==req.body.mail)
+								notify.text+="you";
+							else
+								notify.text+=user.name;
+							formatAMPM(notification[i].time);
+							notifications.push(notify);
+							notify={};
+		   				    i++;
+		   				    fetch_notify(i)
+						})
+
+					}
+
+					function sharepost()
+					{
+						dbo.collection("users").findOne({mail:notification[i].sharedby},function(err, user) 
+						{
+							if(user.mail==req.body.mail)
+								notify.text+="you";
+							else
+								notify.text+=user.name;
+							formatAMPM(notification[i].time);
+							notifications.push(notify);
+							notify={};
+		   				    i++;
+		   				    fetch_notify(i)
+						})
+
+					}
+
+					function formatAMPM(time) 
+					{
+						if(notification[i].post_mail)
+							{
+								const monthNames = ["January", "February", "March", "April", "May", "June",
+														        "July", "August", "September", "October", "November", "December"];
+							    let dateObj = new Date(time);
+							    let month = monthNames[dateObj.getMonth()];
+							    let day = String(dateObj.getDate()).padStart(2, '0');
+							    let year = dateObj.getFullYear();
+							    let output = day  + ' '+ month  + ' ' + year;
+								notify.text+="posted on "+output;
+								
+								  var date=new Date(time);
+								  var hours = date.getHours();
+								  var minutes = date.getMinutes();
+								  var ampm = hours >= 12 ? 'pm' : 'am';
+								  hours = hours % 12;
+								  hours = hours ? hours : 12; // the hour '0' should be '12'
+								  minutes = minutes < 10 ? '0'+minutes : minutes;
+								  var strTime = hours + ':' + minutes + ' ' + ampm;
+								  notify.text+=" ,time: "+strTime;
+							}
+
+					  	 var t=Math.floor((new Date().getTime()-notification[i].time)/60000);
+					 	if(t>=60)
+					 	 {
+					 	 	t=Math.floor((new Date().getTime()-notification[i].time)/(60*60000));
+					 	 	if(t>=24)
+					 	 		t=Math.floor((new Date().getTime()-notification[i].time)/(60*60000*24))+" days";
+					 	 	else
+					 	 		t+=" hrs";
+		 	 			}
+						 else
+						 	t+=" mins";
+	   					 notify.time=t;
+								
+					}
 	   			}
 	   			else
 	   			{
-	   				var myquery = {user:req.body.mail};
-			  	  	var newvalues1 = { $set: {visibility:'seen'}};
-				  	
-					dbo.collection("notifications").updateMany(myquery, newvalues1, function(err, result) 
-					{
-					    if (err) throw err;
-						res.send(notifications);	
-					})
-				  		
-				 
+	   				res.send(notifications);
 	   				
+				  		 
 	   			}
 	   		}
 	   		fetch_notify(0);
@@ -2074,6 +2390,16 @@ app.post('/notifications',function(req,res)
 	})
 })
 
+app.post('/changeVisibility',function(req,res)
+{
+	var myquery = {user:req.body.mail};
+  	var newvalues1 = { $set: {visibility:'seen'}};
+	dbo.collection("notifications").updateMany(myquery, newvalues1, function(err, result) 
+	{
+	    if (err) throw err;
+	    console.log("change to seen");
+	})	
+})
 
 
 app.post('/getPost',function(req,res)
@@ -2081,7 +2407,7 @@ app.post('/getPost',function(req,res)
 	dbo.collection('posts').findOne({_id: new mongodb.ObjectID(req.body.id)},function(err,post)
 	{
 		if(err) throw err;
-		
+		if(post)
 		dbo.collection('users').findOne({mail: post.mail},function(err,users)
 		{
 			if(err) throw err;
@@ -2125,7 +2451,6 @@ app.post('/countNotify',function(req,res)
 	dbo.collection('notifications').find({$or:[{visibility:'unseen',user:req.body.mail}]}).count(function(err,result)
 	{
 		if(err) throw err;
-		console.log("ccc "+result);
 		res.send({count:result});
 	}) 	
 })

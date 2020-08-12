@@ -29,6 +29,6 @@
   <mat-card-actions>
     <button *ngIf="post.like==1;else block" mat-button (click)="unlike(post._id,post.mail)">UNLIKE</button>
     <ng-template #block><button mat-button (click)="like(post._id,post.mail)">LIKE</button></ng-template>
-    <button mat-button (click)="share(post.post,post.mail)" *ngIf="post.mail!=user.mail">SHARE</button>
+    <button mat-button (click)="share(post.post,post.mail,post._id)" *ngIf="post.mail!=user.mail">SHARE</button>
   </mat-card-actions>
 </mat-card>

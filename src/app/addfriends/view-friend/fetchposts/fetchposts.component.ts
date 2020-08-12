@@ -57,9 +57,9 @@ export class FetchpostsComponent implements OnInit,OnDestroy {
     });
   }
 
-    share(post:any,mail:string)
+    share(post:any,mail:string,id:string)
     {
-        this.sub4=this.datastorage.sharePost(post,mail,this.user.mail).subscribe(data=>{
+        this.sub4=this.datastorage.sharePost(post,mail,this.user.mail,id).subscribe(data=>{
         this.sub5=this.datastorage.viewposts(this.mail,this.user.mail).
         subscribe(data=>{
           this.posts=data;

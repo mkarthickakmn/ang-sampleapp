@@ -52,7 +52,9 @@ import { PrivacyComponent } from './profile/privacy/privacy.component';
 import { AutofocusDirective } from './shared/autofocus.directive';
 import { UploadsComponent } from './profile/uploads/uploads.component';
 import { NotificationsComponent } from './notifications/notifications.component';
-
+import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
+// import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+// const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 @NgModule({
   declarations: [
     AppComponent,
@@ -69,7 +71,8 @@ import { NotificationsComponent } from './notifications/notifications.component'
     FetchpostsComponent,
     PrivacyComponent,
     AutofocusDirective,
-    NotificationsComponent
+    NotificationsComponent,
+    PagenotfoundComponent
   ],
   imports: [
     BrowserModule,
@@ -108,7 +111,8 @@ import { NotificationsComponent } from './notifications/notifications.component'
     ScrollingModule,
     LayoutModule,
     ReactiveFormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    // SocketIoModule.forRoot(config)
   ],
   providers: [],
   entryComponents: [

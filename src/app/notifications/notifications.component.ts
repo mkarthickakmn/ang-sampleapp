@@ -4,6 +4,7 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
 import {DataStorageService} from '../datastorage.service';
 import {AuthService} from '../login/auth.service';
 import {Notification}from '../shared/notification.service';
+import {Router} from '@angular/router';
 export interface DialogData {
   caption:string,
   desc:string,
@@ -20,7 +21,8 @@ export interface DialogData {
 export class NotificationsComponent implements OnInit,OnDestroy {
 
   constructor(private datastorage:DataStorageService,private auth:AuthService,changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,
-    public dialog: MatDialog,private notify:Notification) { }
+    public dialog: MatDialog,private notify:Notification,private route:Router
+    ) { }
 
  notifications:any=[];
   ngOnInit(): void {
@@ -28,6 +30,9 @@ export class NotificationsComponent implements OnInit,OnDestroy {
   		console.log(data);
   		this.notifications=data;
   	})
+
+    this.notify.getPage.next(this.route.url);
+
   }
 
    getNotification(id:string): void {
@@ -43,9 +48,10 @@ export class NotificationsComponent implements OnInit,OnDestroy {
    	}); 
   }
 
-  ngOnDestroy()
+   ngOnDestroy()
   {
-  	this.notify.getNotifyCount.next(null);
+    this.datastorage.changeVisibility(this.auth.getUser().mail).subscribe();
+    this.notify.getNotifyCount.next(null);
   }
 }
 

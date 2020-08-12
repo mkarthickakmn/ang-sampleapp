@@ -1,6 +1,8 @@
 <mat-selection-list #shoes [multiple]="false">
   <mat-list-option *ngFor="let notification of notifications" (click)="getNotification(notification.post_id)">
-    {{notification.text}}
-    <p style="text-align: right;">{{notification.time}} ago.</p>
+    <div *ngIf="notification.visibility=='unseen'"><b>{{notification.text}}</b>
+    <p style="text-align: right;"><b>{{notification.time}} ago.</b></p></div>
+    <div *ngIf="notification.visibility=='seen'">{{notification.text}}
+    <p style="text-align: right;">{{notification.time}} ago.</p></div>
   </mat-list-option>
 </mat-selection-list>

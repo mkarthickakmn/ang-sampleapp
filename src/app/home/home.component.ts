@@ -86,9 +86,9 @@ export class HomeComponent implements OnInit,OnDestroy {
     });
   }
 
-  share(post:any,mail:string)
+  share(post:any,mail:string,id:string)
   {
-      this.sub5=this.datastorage.sharePost(post,mail,this.auth.getUser().mail).subscribe(data=>{
+      this.sub5=this.datastorage.sharePost(post,mail,this.auth.getUser().mail,id).subscribe(data=>{
       this.fetchPosts();
       this._snackBar.openFromComponent(SnackbarComponent, {
             duration:2000,

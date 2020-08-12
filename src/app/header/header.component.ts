@@ -1,6 +1,6 @@
 import { Component,OnInit,Input,OnDestroy,ViewEncapsulation } from '@angular/core';
 import { Observable } from 'rxjs';
-import {Router} from '@angular/router';
+import {Router,ActivatedRoute} from '@angular/router';
 // import {ChatService} from '../chat/messages/chat.service';
 import{AuthService} from '../login/auth.service';
 import {Subscription} from 'rxjs';
@@ -26,24 +26,19 @@ export class HeaderComponent implements OnInit,OnDestroy{
   private sub3:Subscription;
   private sub4:Subscription;
 
-  constructor(private auth:AuthService,private route:Router,
+  constructor(private auth:AuthService,private route:Router,private router:ActivatedRoute,
   private notify:Notification,private datastorage:DataStorageService){}
   
   ngOnInit()
   {
+
     this.notify.getPage.subscribe(data=>{
-      console.log(data);
       this.path=data;
     });
     this.sub1=this.auth.isLogged.subscribe(data=>{
       if(data)
       {
-        console.log(data);
         this.user=data.name;
-        if(data)
-        {
-          this.route.navigate(['/home']);
-        }
       }
       
     })
@@ -86,6 +81,11 @@ export class HeaderComponent implements OnInit,OnDestroy{
     console.log('logout')
     this.route.navigate(['/login']);
     localStorage.clear();
+  }
+
+  help()
+  {
+    alert('further bugs and improvements will be fixed at the next update...Thanks!!!');
   }
   
   ngOnDestroy()
