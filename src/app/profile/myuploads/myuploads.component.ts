@@ -24,6 +24,7 @@ export class MyuploadsComponent implements OnInit {
   uploadpost:FormGroup;
   user:any=null;
   posts:any;
+  loading:boolean;
   private sub1:Subscription;
   private sub2:Subscription;
   private sub3:Subscription;
@@ -33,7 +34,7 @@ export class MyuploadsComponent implements OnInit {
   ngOnInit(): void {
     this.user=this.auth.getUser();
      
-
+    this.loading=true;
     if(this.user)
     {
       this.fetchPosts();
@@ -41,6 +42,7 @@ export class MyuploadsComponent implements OnInit {
     }
     this.sub2=this.homeService.updateHomePage.
       subscribe(data=>{
+        this.loading=true;
         this.fetchPosts();
       });
   }
@@ -48,6 +50,7 @@ export class MyuploadsComponent implements OnInit {
   like(id,mail)
   {
     this.sub3=this.datastorage.likePost(id,mail,this.auth.getUser().mail,1).subscribe(data=>{
+      this.loading=true;
        this.fetchPosts();
     });
   }
@@ -55,6 +58,7 @@ export class MyuploadsComponent implements OnInit {
    unlike(id,mail)
   {
     this.sub4=this.datastorage.unlikePost(id,mail,this.auth.getUser().mail,-1).subscribe(data=>{
+       this.loading=true;
        this.fetchPosts();
     });
   }
@@ -62,7 +66,7 @@ export class MyuploadsComponent implements OnInit {
   del(id)
   {
   	this.sub5=this.datastorage.delPost(id).subscribe(data=>{
-	 	
+	 	   this.loading=true;
        this.fetchPosts();
         this._snackBar.openFromComponent(SnackbarComponent1, {
 	      duration:2000,
@@ -75,6 +79,7 @@ export class MyuploadsComponent implements OnInit {
   	this.sub1=this.datastorage.selfPosts(this.user.mail).
         subscribe(data=>{
            this.posts=data;
+           this.loading=false;
         });
   }
 

@@ -48,13 +48,14 @@ export class LoginComponent implements OnInit,OnDestroy {
       street: ['', Validators.required],
       city: ['', Validators.required],
       state: ['', Validators.required],
-      mobile: ['', Validators.required],
+      mobile: ['', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
     });
 
      this.thirdFormGroup = this.fb.group({
-      pwd: ['', Validators.required],
-      cnf: ['', Validators.required]
+      pwd: ['',[Validators.minLength(6),Validators.required]],
+      cnf: ['',[Validators.minLength(6), Validators.required]]
     });
+
 
      this.sub5=this.auth.isLogged.subscribe(data=>{
       if(data)

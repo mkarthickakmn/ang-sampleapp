@@ -92,7 +92,7 @@
       <form [formGroup]="thirdFormGroup" >
         <ng-template matStepLabel>Set Password</ng-template>
         <mat-form-field>
-          <mat-label>Password</mat-label>
+          <mat-label>Password(should not be less than 6 characters)</mat-label>
           <input matInput type="password" placeholder="password should not be less than 6 characters" 
           formControlName="pwd"  required>
         </mat-form-field>
@@ -102,12 +102,14 @@
                  required>
         </mat-form-field> 
         <div *ngIf="thirdFormGroup.value.pwd==thirdFormGroup.value.cnf&&
-        (thirdFormGroup.value.cnf&&thirdFormGroup.value.pwd)">Password matched</div>
+        (thirdFormGroup.value.cnf&&thirdFormGroup.value.pwd)&&
+        (thirdFormGroup.value.pwd.length>=6&&thirdFormGroup.value.cnf.length>=6)">Password matched</div>
         <div>
           <button mat-button matStepperPrevious>Back</button>
           <button mat-button matStepperNext type="submit" 
           [disabled]="thirdFormGroup.value.pwd!=thirdFormGroup.value.cnf&&
-        (thirdFormGroup.value.cnf&&thirdFormGroup.value.pwd)">Next</button>
+        (thirdFormGroup.value.cnf&&thirdFormGroup.value.pwd)&&
+        (thirdFormGroup.value.pwd.length>=6&&thirdFormGroup.value.cnf.length>=6)">Next</button>
         </div>
       </form>
       <button mat-raised-button color="accent" style="margin-left: 40%" (click)="cancel()">cancel</button>  

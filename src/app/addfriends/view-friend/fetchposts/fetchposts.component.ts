@@ -15,15 +15,18 @@ export class FetchpostsComponent implements OnInit,OnDestroy {
   posts:any;
   user:any;
   noPosts:string="";
+  loading:boolean;
   private sub1:Subscription;
   private sub2:Subscription;
   private sub3:Subscription;
   private sub4:Subscription;
   private sub5:Subscription;
     ngOnInit(): void {
+    this.loading=true;
     this.user=this.auth.getUser();
   	this.sub1=this.datastorage.viewposts(this.mail,this.user.mail).
   	subscribe(data=>{
+      this.loading=false;
       if(data.length>0)
   		  this.posts=data;
       else if(data.length==0)
@@ -40,9 +43,11 @@ export class FetchpostsComponent implements OnInit,OnDestroy {
   like(id,mail)
   {
     this.sub2=this.datastorage.likePost(id,mail,this.user.mail,1).subscribe(data=>{
+       this.loading=true;
        this.datastorage.viewposts(this.mail,this.user.mail).
 	  	subscribe(data=>{
 	  		this.posts=data;
+        this.loading=false;
 	  	});
     });
   }
@@ -50,9 +55,11 @@ export class FetchpostsComponent implements OnInit,OnDestroy {
    unlike(id,mail)
   {
     this.sub3=this.datastorage.unlikePost(id,mail,this.user.mail,-1).subscribe(data=>{
+      this.loading=true;
       this.datastorage.viewposts(this.mail,this.user.mail).
 	  	subscribe(data=>{
 	  		this.posts=data;
+        this.loading=false;
 	  	});
     });
   }
@@ -60,9 +67,11 @@ export class FetchpostsComponent implements OnInit,OnDestroy {
     share(post:any,mail:string,id:string)
     {
         this.sub4=this.datastorage.sharePost(post,mail,this.user.mail,id).subscribe(data=>{
+        this.loading=true;
         this.sub5=this.datastorage.viewposts(this.mail,this.user.mail).
         subscribe(data=>{
           this.posts=data;
+          this.loading=false;
         });
         this._snackBar.openFromComponent(SnackbarComponent, {
               duration:2000,

@@ -53,10 +53,10 @@ export class HomeComponent implements OnInit,OnDestroy {
     }
     this.sub2=this.homeService.updateHomePage.
       subscribe(data=>{
+        this.loading=true;
         this.fetchPosts();
       });
 
-      this.datastorage.countChat("test2@gmail.com").subscribe();
   }
 
   openBottomSheet(): void {
@@ -68,6 +68,7 @@ export class HomeComponent implements OnInit,OnDestroy {
   like(id,mail)
   {
     this.sub3=this.datastorage.likePost(id,mail,this.auth.getUser().mail,1).subscribe(data=>{
+       this.loading=true;
        this.fetchPosts();
        // this.chat.likePost(mail);
        this.datastorage.countNotify(this.auth.getUser().mail).subscribe(count=>{
@@ -79,6 +80,7 @@ export class HomeComponent implements OnInit,OnDestroy {
    unlike(id,mail)
   {
     this.sub4=this.datastorage.unlikePost(id,mail,this.auth.getUser().mail,-1).subscribe(data=>{
+       this.loading=true;
        this.fetchPosts();
        // this.chat.likePost(mail);
        this.datastorage.countNotify(this.auth.getUser().mail).subscribe(count=>{
@@ -91,6 +93,7 @@ export class HomeComponent implements OnInit,OnDestroy {
   share(post:any,mail:string,id:string)
   {
       this.sub5=this.datastorage.sharePost(post,mail,this.auth.getUser().mail,id).subscribe(data=>{
+      this.loading=true;
       this.fetchPosts();
       this._snackBar.openFromComponent(SnackbarComponent, {
             duration:2000,
