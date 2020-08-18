@@ -1,7 +1,7 @@
 import { Component,OnInit,Input,OnDestroy,ViewEncapsulation } from '@angular/core';
 import { Observable } from 'rxjs';
 import {Router,ActivatedRoute} from '@angular/router';
-// import {ChatService} from '../chat/messages/chat.service';
+import {ChatService} from '../chat/messages/chat.service';
 import{AuthService} from '../login/auth.service';
 import {Subscription} from 'rxjs';
 import {Notification} from '../shared/notification.service';
@@ -27,7 +27,7 @@ export class HeaderComponent implements OnInit,OnDestroy{
   private sub4:Subscription;
 
   constructor(private auth:AuthService,private route:Router,private router:ActivatedRoute,
-  private notify:Notification,private datastorage:DataStorageService){}
+  private notify:Notification,private datastorage:DataStorageService,private chat:ChatService){}
   
   ngOnInit()
   {
@@ -44,6 +44,7 @@ export class HeaderComponent implements OnInit,OnDestroy{
     })
 
     this.sub2=this.notify.getChatCount.subscribe((count)=>{
+      console.log("c"+count);
        if(count)
             this.chatCount=count;
         else
@@ -77,7 +78,7 @@ export class HeaderComponent implements OnInit,OnDestroy{
   logout()
   {
     this.auth.isLogged.next(null);
-    // this.chat.disconnected(this.auth.getUser().mail);
+    this.chat.disconnected(this.auth.getUser().mail);
     console.log('logout')
     this.route.navigate(['/login']);
     localStorage.clear();

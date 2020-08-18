@@ -7,7 +7,10 @@
       matBadgeColor="accent" style="cursor: pointer;"><mat-icon [ngStyle]="styleObject('/addFriends')" matTooltip="Add Friends" matTooltipClass="example-tooltip-red">group_add</mat-icon></span>
     <span *ngIf="isLogin" class="icons" routerLink="/notifications" matBadge="{{notifyCount}}" matBadgePosition="above" 
       matBadgeColor="accent" style="cursor: pointer;"><mat-icon  [ngStyle]="styleObject('/notifications')" matTooltip="notifications" matTooltipClass="example-tooltip-red">
-    comment</mat-icon></span>
+    notifications</mat-icon></span>
+    <span *ngIf="isLogin" class="icons" routerLink="/chat" matBadge="{{chatCount}}" matBadgePosition="above" 
+      matBadgeColor="accent" style="cursor: pointer;"><mat-icon  [ngStyle]="styleObject('/chat')" matTooltip="messages" matTooltipClass="example-tooltip-red">
+    message</mat-icon></span>
     <span *ngIf="isLogin&&user" routerLink="/profile" matTooltip="Profile" matTooltipClass="example-tooltip-red" [ngStyle]="styleObject('/profile')"style="cursor: pointer;" class="user">{{user}}</span>
     <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
       <mat-icon>more_vert</mat-icon>

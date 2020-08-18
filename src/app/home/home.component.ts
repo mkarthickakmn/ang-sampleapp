@@ -57,6 +57,18 @@ export class HomeComponent implements OnInit,OnDestroy {
         this.fetchPosts();
       });
 
+    setInterval(()=>{
+         if(this.route.url!='/addFriends')   
+           this.datastorage.countFriendRequests(this.auth.getUser().mail).subscribe(count=>{
+            this.notify.getFriendCount.next(count.count);  
+        })
+
+         if(this.route.url!='/notifications')   
+           this.datastorage.countNotify(this.auth.getUser().mail).subscribe(count=>{
+            this.notify.getNotifyCount.next(count.count);  
+        })
+
+    },1000)
   }
 
   openBottomSheet(): void {

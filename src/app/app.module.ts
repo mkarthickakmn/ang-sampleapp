@@ -23,6 +23,9 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { LoaderComponent } from './shared/loader/loader.component';
 import { MyuploadsComponent } from './profile/myuploads/myuploads.component';
+import {ChatComponent} from './chat/chat.component';
+import {MessagesComponent} from './chat/messages/messages.component';
+import {FriendsComponent} from './chat/friends/friends.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +46,10 @@ import { MyuploadsComponent } from './profile/myuploads/myuploads.component';
     NotificationsComponent,
     PagenotfoundComponent,
     LoaderComponent,
-    MyuploadsComponent
+    MyuploadsComponent,
+    ChatComponent,
+    MessagesComponent,
+    FriendsComponent
   ],
   imports: [
     BrowserModule,
