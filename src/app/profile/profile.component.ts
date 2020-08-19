@@ -21,7 +21,7 @@ export class ProfileComponent implements  OnDestroy,OnInit{
 
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,
     public dialog: MatDialog,private auth:AuthService) {
-    this.mobileQuery = media.matchMedia('(max-width: 600px)');
+    this.mobileQuery = media.matchMedia('(max-width: 4000px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
   }

@@ -18,7 +18,7 @@ export class ChatComponent implements OnInit {
 
   constructor(private datastorage:DataStorageService,private auth:AuthService,private chat:ChatService,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,private notify:Notification,private route:Router) {
-    this.mobileQuery = media.matchMedia('(max-width: 600px)');
+    this.mobileQuery = media.matchMedia('(max-width:4000px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener); }
   friends:any;
@@ -85,6 +85,17 @@ export class ChatComponent implements OnInit {
       this.friends=data;
       })
     })
+
+    setInterval(()=>{
+        this.sub12=this.datastorage.countChat(this.auth.getUser().mail).subscribe(count=>{
+              if(count.count>0)
+              {
+                this.chatCount=(count.count);  
+              }
+              else
+                this.chatCount=null;
+          })
+    },1000)
 
         this.filteredOptions = this.myControl.valueChanges.pipe(
       

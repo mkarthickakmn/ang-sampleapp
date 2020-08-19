@@ -1,35 +1,3 @@
-<!-- 
-
-<div class="split left">
-	<mat-card style="margin-bottom: 2%">
-  <mat-card-content>
-    <div class="upload">
-		<form class="example-form">
-		  <mat-form-field class="example-full-width">
-		    <input type="text"
-		           placeholder="Pick one"
-		           aria-label="Number"
-		           matInput
-		           [formControl]="myControl"
-		           [matAutocomplete]="auto">
-		    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-		      <mat-option *ngFor="let option of filteredOptions | async" 
-		      [value]="option.name" style="padding: 5%">
-		        <mat-list><img  *ngIf="option.image" src={{option.image}}> <span >{{option.name}}</span></mat-list>
-		      </mat-option>
-		    </mat-autocomplete>
-		  </mat-form-field>
-		  <button color="accent" mat-raised-button (click)="openChat()">Open friend</button>
-		</form>   	
-    </div>
-  </mat-card-content>
-</mat-card>
-	<app-friends  *ngIf="friends" [friends]="friends" ></app-friends>
-</div>
-
-<div class="split right" style="background-color: aliceblue;">
-   	<app-messages></app-messages>
-</div> -->
 
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches" >
    <mat-toolbar color="primary" class="example-toolbar">
@@ -40,7 +8,7 @@
     <span>
       <mat-icon aria-hidden="false" style="cursor: pointer;" routerLink="/home" aria-label="Example home icon">home</mat-icon>
     </span>
-    <span class="user">{{user}}</span>
+    <span class="self1">{{user}}</span>
   </mat-toolbar>
   <mat-sidenav-container class="example-sidenav-container"
                          [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
@@ -65,7 +33,7 @@
 				      </mat-option>
 				    </mat-autocomplete>
 				  </mat-form-field>
-				  <button color="accent" mat-raised-button (click)="openChat()" (click)="snav.toggle()">Open friend</button>
+				  <button color="accent" mat-raised-button (click)="openChat()" [disabled]="!friend" (click)="snav.toggle()">Open friend</button>
 				</form>   	
     		</div>
         </a>

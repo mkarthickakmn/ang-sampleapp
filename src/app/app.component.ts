@@ -30,6 +30,13 @@ constructor(private auth:AuthService,
             })
       })
 
+  //    this.chat.getNotification().subscribe(data=>{
+  //    if(this.route.url!='/notifications')   
+  //        this.datastorage.countNotify(this.auth.getUser().mail).subscribe(count=>{
+  //         this.notify.getNotifyCount.next(count.count);  
+  //     })  
+  // })
+
     this.sub=this.auth.isLogged.subscribe(data=>{
         if(data)
           this.isLogin=true;

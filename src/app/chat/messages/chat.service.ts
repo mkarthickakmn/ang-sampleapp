@@ -95,12 +95,12 @@ export class ChatService {
         })  
     }
 
-    public likePost(mail:string)
+    public setNotification(mail:string)
     {
          this.socket.emit("likePost",mail);   
     }
 
-     public getLikePosts()
+     public getNotification()
     {
            return Observable.create(observe=>{
             this.socket.on('getlikePost',likes=>{

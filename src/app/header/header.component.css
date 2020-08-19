@@ -23,3 +23,13 @@
 	font-size: 16px;
 }
 
+.position-fixed
+{
+	position: fixed;
+	z-index:2
+}
+
+.content
+{
+	margin-top: 58px;
+}

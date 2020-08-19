@@ -62,11 +62,15 @@
         <span  matBadge="{{count}}" matBadgeOverlap="false"><h2>View Friend lists</h2></span>
   	</mat-panel-title>
     </mat-expansion-panel-header>
-    <p *ngFor="let friend of list">
-        <mat-list>
-        	<img  *ngIf="friend.image" src={{friend.image}}> <span >{{friend.name}}
-    		<button mat-raised-button (click)="removeFriend(friend.friend)" color="warn">Remove friend</button></span>
-        </mat-list>
-    </p>
-    <p *ngIf="list.length==0">No friends available..</p>
+    <app-loader *ngIf="loading;else block"></app-loader>
+    <ng-template #block>
+	    <p *ngFor="let friend of list">
+	        <mat-list>
+	        	<img  *ngIf="friend.image" src={{friend.image}}> <span >{{friend.name}}
+	    		<button mat-raised-button (click)="removeFriend(friend.friend)" color="warn">Remove friend</button></span>
+	        </mat-list>
+    	</p>
+    	<p *ngIf="list.length==0">No friends available..</p>    	
+    </ng-template>
+
 </mat-expansion-panel>

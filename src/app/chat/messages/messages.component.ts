@@ -21,6 +21,9 @@ export class MessagesComponent implements OnInit {
   users_info:any={}
   user:any;
   count:number=0;
+  down:boolean=false;
+  up:boolean=false;
+  scroll:boolean=false;
   private sub1:Subscription;
   private sub2:Subscription;
   private sub3:Subscription;
@@ -29,7 +32,6 @@ export class MessagesComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.scrollToBottom();
     this.notify.getChatCount.next(null);
   	this.user=this.auth.getUser();
     // this.sub1=this.chat.getFriendList().subscribe(data=>{
@@ -42,6 +44,8 @@ export class MessagesComponent implements OnInit {
         // this.sub3=this.chat.getMessages({from:this.friend.friend,to:this.user.mail}).subscribe(data=>{
         this.messages=[];
         this.messages.push(...data);
+        this.down=true;
+        this.up=false;
 
       });
 
@@ -52,6 +56,7 @@ export class MessagesComponent implements OnInit {
          if((this.friend&&(this.friend.mail==data.from)))
          {
              this.messages.push(data);
+             this.scroll=false;
              this.datastorage.fetchChats(this.auth.getUser().mail).
               subscribe(friends=>{
                  this.chat.updateMsg(data).subscribe();
@@ -63,35 +68,46 @@ export class MessagesComponent implements OnInit {
 
   }
 
-   ngAfterViewChecked() {        
-        this.scrollToBottom();        
+  scrollToBottom(): void {
+      try {
+          this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+      } catch(err) { }
+      if(this.myScrollContainer.nativeElement.scrollTop)
+        this.scroll=true;  
+            
+  }
+
+  ngAfterViewChecked() {     
+       if(!this.scroll)
+          {
+            this.scrollToBottom();   
+          }
+        else
+          console.log("scroll");      
     } 
 
-    scrollToBottom(): void {
-        try {
-            this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-        } catch(err) { }                 
-    }
-
-  sendMessage()
+   sendMessage()
   {
     //friend.friend
-
-    if(this.friend.mail)
-    {
-        this.chat.sendMessage({from:this.user.mail,to:this.friend.mail,message:this.message,date:this.getdays,time:this.formatAMPM()});
-        this.chat.getChat.next(this.friend.mail);
-    }
-    else
-    {
-      if(this.friend.p1==this.user.mail)
-        this.chat.sendMessage({from:this.user.mail,to:this.friend.p2,message:this.message,date:this.getdays,time:this.formatAMPM()});
-      else
-        this.chat.sendMessage({from:this.user.mail,to:this.friend.p1,message:this.message,date:this.getdays,time:this.formatAMPM()});
-
-    }
-  	this.messages.push({from:this.user.mail,to:this.friend.mail,message:this.message,date:this.getdays,time:this.formatAMPM()});
-  	this.message="";
+     if(this.message.length>0)
+      {
+        if(this.friend.mail)
+            {
+                this.chat.sendMessage({from:this.user.mail,to:this.friend.mail,message:this.message,date:this.getdays,time:this.formatAMPM()});
+                this.chat.getChat.next(this.friend.mail);
+            }
+            else
+            {
+              if(this.friend.p1==this.user.mail)
+                this.chat.sendMessage({from:this.user.mail,to:this.friend.p2,message:this.message,date:this.getdays,time:this.formatAMPM()});
+              else
+                this.chat.sendMessage({from:this.user.mail,to:this.friend.p1,message:this.message,date:this.getdays,time:this.formatAMPM()});
+      
+            }
+            this.messages.push({from:this.user.mail,to:this.friend.mail,message:this.message,date:this.getdays,time:this.formatAMPM()});
+            this.message="";
+             this.scroll=false;
+      }
     
 
   }

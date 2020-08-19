@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators,NgForm} from '@angular/forms';
 import{DataStorageService} from '../../datastorage.service';
 import{HomeService} from '../HomeService.service';
 import {Subscription} from 'rxjs';
-
+import {ChatService} from '../../chat/messages/chat.service';
 @Component({
   selector: 'app-bottom-sheet',
   templateUrl: './bottom-sheet.component.html',
@@ -16,7 +16,7 @@ export class BottomSheetComponent implements OnInit,OnDestroy {
   constructor(private fb:FormBuilder,private datastorage:DataStorageService,
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: any,
     private _bottomSheetRef: MatBottomSheetRef<BottomSheetComponent>,private _snackBar: MatSnackBar,
-    private homeService:HomeService) { }
+    private homeService:HomeService,private chat:ChatService) { }
 
   image:any=null;
   form:FormGroup;
@@ -61,7 +61,7 @@ upload()
          subscribe(data=>{
              this._bottomSheetRef.dismiss();
               event.preventDefault();
-            
+              this.chat.setNotification("user@gmail.com");
              this.homeService.updateHomePage.next();
             
              this._snackBar.openFromComponent(SnackbarComponent, {

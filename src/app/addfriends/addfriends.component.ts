@@ -30,6 +30,7 @@ export class AddfriendsComponent implements OnInit {
   req:string="";
   search:boolean=true;
   count:number;
+  loading:boolean=false;
   private sub1:Subscription;
   private sub2:Subscription;
   private sub3:Subscription;
@@ -81,7 +82,9 @@ export class AddfriendsComponent implements OnInit {
   {
      if(this.panelOpenState)
       {
+          this.loading=true;
           this.sub3=this.datastorage.fetchFriends(this.auth.getUser().mail).subscribe(data=>{
+              this.loading=false;
               this.list=data;
               this.count=this.list.length;
       });

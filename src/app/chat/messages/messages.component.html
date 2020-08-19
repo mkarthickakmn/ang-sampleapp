@@ -1,12 +1,26 @@
-<div  #scrollMe style="overflow: scroll; height:673px;background-color: antiquewhite;">
-	<div *ngIf="friend" style="text-align: center;" class="user">
+
+<div  #scrollMe style="overflow: scroll; height:645px;background-color: antiquewhite;">
+	  
+	<!-- <div class="circle" *ngIf="down">
+	    <a (click)="scrollToBottom()">
+	      <span class="bottom"></span>
+	    </a>
+	</div>
+
+    <div class="circle" *ngIf="up">
+	    <a (click)="scrollToTop()">
+	      <span class="top"></span>
+	    </a>
+    </div> -->
+
+	<div *ngIf="friend" style="text-align: center;" class="user1">
 		<img src={{friend.image}} draggable="false"/><span ><h1>{{friend.name}}</h1>({{friend.connection}})</span>
 	</div>
 	<ol class="chat" *ngFor="let msgs of messages">
 		<li  [ngClass]="{self:msgs.from==user.mail}">
-		    <div class="user" *ngIf="user&&msgs.from==user.mail"><p>You</p>
+		    <div class="user1" *ngIf="user&&msgs.from==user.mail"><p>You</p>
 				<img src={{this.user.image}} draggable="false"/></div>
-		    <div class="user" *ngIf="friend&&msgs.from!=user.mail"><p>{{friend.name}}</p>
+		    <div class="user1" *ngIf="friend&&msgs.from!=user.mail"><p>{{friend.name}}</p>
 		    	<img src={{friend.image}} draggable="false"/></div>
 		  	<div class="msg" style="margin-bottom: 10px">
 			    <p>{{msgs.message}}</p>
