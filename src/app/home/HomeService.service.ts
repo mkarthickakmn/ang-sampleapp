@@ -5,6 +5,6 @@ import{map,tap} from 'rxjs/operators';
 @Injectable({providedIn:'root'})
 export class HomeService
 {
-	updateHomePage=new Subject<void>();
+	updateHomePage=new Subject<any>();
 	updateImage=new Subject<string>();
 }

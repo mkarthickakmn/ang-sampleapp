@@ -44,8 +44,7 @@ export class MessagesComponent implements OnInit {
         // this.sub3=this.chat.getMessages({from:this.friend.friend,to:this.user.mail}).subscribe(data=>{
         this.messages=[];
         this.messages.push(...data);
-        this.down=true;
-        this.up=false;
+        this.scroll=false;
 
       });
 
@@ -81,9 +80,7 @@ export class MessagesComponent implements OnInit {
        if(!this.scroll)
           {
             this.scrollToBottom();   
-          }
-        else
-          console.log("scroll");      
+          }     
     } 
 
    sendMessage()

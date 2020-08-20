@@ -26,7 +26,7 @@ import { MyuploadsComponent } from './profile/myuploads/myuploads.component';
 import {ChatComponent} from './chat/chat.component';
 import {MessagesComponent} from './chat/messages/messages.component';
 import {FriendsComponent} from './chat/friends/friends.component';
-
+import {ObjectID} from 'bson';
 @NgModule({
   declarations: [
     AppComponent,

@@ -22,7 +22,8 @@
             "allowedCommonJsDependencies" : [
               "socket.io-client", //Warning related packages*
               "socket.io-parser",
-              "debug"
+              "debug",
+              "buffer"
             ], 
             "assets": [
               "src/favicon.ico",

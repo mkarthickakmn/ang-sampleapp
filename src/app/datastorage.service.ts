@@ -22,12 +22,13 @@ constructor(private http:HttpClient,private auth:AuthService){}
 			
 	}
 
-	createPost(user:any,post:any)
+	createPost(id:any,user:any,post:any)
 	{
 		return this.http
 	  	.post<any>(
-	    '/createPost',
+	    'http://localhost:3000/createPost',
 	    {
+    	  id:id,
     	  mail:user.mail,
 	      post:post
 	    }
@@ -124,17 +125,17 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	  )
 	}
 
-	sharePost(post:any,mail:string,user:string,id:string)
+	sharePost(post:any,mail:string,user:string,id:string,objId:any)
 	{
-		console.log(id);
 		return this.http
 	  	.post<any>(
-	    '/sharePost',
+	    'http://localhost:3000/sharePost',
 	    {
 	    	post:post,
 	    	mail:mail,
 	    	user:user,
-	    	id:id
+	    	id:id,
+	    	objId:objId
 	    }
 	  )
 	}

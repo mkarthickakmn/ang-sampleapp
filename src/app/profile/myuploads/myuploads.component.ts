@@ -40,37 +40,49 @@ export class MyuploadsComponent implements OnInit {
       this.fetchPosts();
       
     }
-    this.sub2=this.homeService.updateHomePage.
-      subscribe(data=>{
-        this.loading=true;
-        this.fetchPosts();
-      });
+    // this.sub2=this.homeService.updateHomePage.
+    //   subscribe(data=>{
+    //     this.loading=true;
+    //     this.fetchPosts();
+    //   });
   }
 
-  like(id,mail)
+  like(id,mail,post:any)
   {
     this.sub3=this.datastorage.likePost(id,mail,this.auth.getUser().mail,1).subscribe(data=>{
-      this.loading=true;
-       this.fetchPosts();
+       // this.fetchPosts();
+       post.count++;
+       post.like=1;
+      //  this.datastorage.countNotify(this.auth.getUser().mail).subscribe(count=>{
+      //     this.notify.getNotifyCount.next(count.count++);  
+      // })  
     });
   }
 
-   unlike(id,mail)
+   unlike(id,mail,post:any)
   {
     this.sub4=this.datastorage.unlikePost(id,mail,this.auth.getUser().mail,-1).subscribe(data=>{
-       this.loading=true;
-       this.fetchPosts();
+       // this.fetchPosts();
+       post.count--;
+       post.like=-1;
+      //  this.datastorage.countNotify(this.auth.getUser().mail).subscribe(count=>{
+      //     this.notify.getNotifyCount.next(count.count++);  
+      // })  
+
     });
   }
 
   del(id)
   {
-  	this.sub5=this.datastorage.delPost(id).subscribe(data=>{
-	 	   this.loading=true;
-       this.fetchPosts();
+    
+    this.sub5=this.datastorage.delPost(id).subscribe(data=>{
+         const index=this.posts.findIndex((posts)=>{
+             return posts._id===id;
+         })
+        this.posts.splice(index,1);
         this._snackBar.openFromComponent(SnackbarComponent1, {
-	      duration:2000,
-	    });
+        duration:2000,
+      });
     });
   }
 

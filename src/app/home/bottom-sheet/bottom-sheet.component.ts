@@ -6,6 +6,8 @@ import{DataStorageService} from '../../datastorage.service';
 import{HomeService} from '../HomeService.service';
 import {Subscription} from 'rxjs';
 import {ChatService} from '../../chat/messages/chat.service';
+import { ObjectID } from 'bson';
+import {AuthService} from '../../login/auth.service';
 @Component({
   selector: 'app-bottom-sheet',
   templateUrl: './bottom-sheet.component.html',
@@ -16,11 +18,12 @@ export class BottomSheetComponent implements OnInit,OnDestroy {
   constructor(private fb:FormBuilder,private datastorage:DataStorageService,
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: any,
     private _bottomSheetRef: MatBottomSheetRef<BottomSheetComponent>,private _snackBar: MatSnackBar,
-    private homeService:HomeService,private chat:ChatService) { }
+    private homeService:HomeService,private chat:ChatService,private auth:AuthService) { }
 
   image:any=null;
   form:FormGroup;
   type:string;
+  post_data:any={};
   private sub1:Subscription;
 
   ngOnInit(): void {
@@ -55,15 +58,28 @@ upload()
 
     if (this.form.valid)
     {
-    
+      var id=new ObjectID().toString();
       this.form.value.img=this.image;
-       this.sub1=this.datastorage.createPost(this.data,this.form.value).
+      this.post_data=
+        {
+          count: 0,
+          image: this.auth.getUser().image,
+          mail: this.auth.getUser().mail,
+          name: "You",
+          post: {caption:this.form.value.caption,desc:this.form.value.desc,img:this.form.value.img},
+          post_date:this.formatDate(new Date().getTime()),
+          post_time: this.formatTime(new Date().getTime()),
+          privacy: this.auth.getUser().post_privacy,
+          time: new Date().getTime(),
+          type: this.form.value.type,
+          _id:  id
+        }
+             
+       this.sub1=this.datastorage.createPost(id,this.data,this.form.value).
          subscribe(data=>{
              this._bottomSheetRef.dismiss();
               event.preventDefault();
-              this.chat.setNotification("user@gmail.com");
-             this.homeService.updateHomePage.next();
-            
+            this.homeService.updateHomePage.next(this.post_data);
              this._snackBar.openFromComponent(SnackbarComponent, {
               duration:2000,
             });
@@ -72,6 +88,35 @@ upload()
       
     }  
   }
+
+   formatDate(time) 
+   {
+                  
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"];
+    let dateObj = new Date(time);
+    let month = monthNames[dateObj.getMonth()];
+    let day = String(dateObj.getDate()).padStart(2, '0');
+    let year = dateObj.getFullYear();
+    let output = day  + ' '+ month  + ' ' + year;
+     return output;
+
+  }
+
+   formatTime(time) 
+  {
+      var date=new Date(time);
+      var hours = date.getHours();
+      var minutes = date.getMinutes();
+      var ampm = hours >= 12 ? 'pm' : 'am';
+      hours = hours % 12;
+      hours = hours ? hours : 12; // the hour '0' should be '12'
+      var min = (minutes < 10 ? '0'+minutes : minutes);
+      var strTime = hours + ':' + min + ' ' + ampm;
+      
+     return strTime;
+  }
+     
 
      ngOnDestroy()
     {

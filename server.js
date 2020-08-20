@@ -202,7 +202,7 @@ app.post('/createPost',function(req,res)
 		{
 			if(privacy.post_privacy)
 				dbo.collection("posts").insertOne
-			  	({mail:req.body.mail,
+			  	({_id: new mongodb.ObjectID(req.body.id),mail:req.body.mail,
 			  	post:{caption:req.body.post.caption,desc :req.body.post.desc,img:req.body.post.img},
 			  	type:req.body.post.type,privacy:privacy.post_privacy,time:new Date().getTime()}, function(err, result) 
 				{
@@ -214,7 +214,7 @@ app.post('/createPost',function(req,res)
 			else
 			{
 				dbo.collection("posts").insertOne
-			  	({mail:req.body.mail,
+			  	({_id: new mongodb.ObjectID(req.body.id),mail:req.body.mail,
 			  	post:{caption:req.body.post.caption,desc :req.body.post.desc,img:req.body.post.img},
 			  	type:req.body.post.type,privacy:"Show to everyone",time:new Date().getTime()}, function(err, result) 
 				{
@@ -229,7 +229,7 @@ app.post('/createPost',function(req,res)
 	else
 	{
 		  dbo.collection("posts").insertOne
-		  ({mail:req.body.mail,
+		  ({_id: new mongodb.ObjectID(req.body.id),mail:req.body.mail,
 		  	post:{caption:req.body.post.caption,desc :req.body.post.desc,img:req.body.post.img},
 		  	type:req.body.post.type,time:new Date().getTime()}, function(err, result) 
 			{
@@ -878,8 +878,9 @@ app.post('/sharePost',function(req,res)
 	dbo.collection("users").findOne({mail:req.body.user},function(err, user) 
 	{	
 	    if (err) throw err;
+	    console.log(req.body.obj_id);
 	  dbo.collection("posts").
-	  insertOne({mail:req.body.user,sharedFrom:req.body.mail,privacy:user.post_privacy,post:req.body.post,time:new Date().getTime()}, function(err, posts) 
+	  insertOne({_id:new mongodb.ObjectID(req.body.objId),mail:req.body.user,sharedFrom:req.body.mail,privacy:user.post_privacy,post:req.body.post,time:new Date().getTime()}, function(err, posts) 
 		{
 		    if (err) throw err;
 		    post_notify(user.post_privacy,req.body.id,req.body.mail)

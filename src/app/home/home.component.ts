@@ -1,4 +1,4 @@
-import { Component, OnInit,OnDestroy } from '@angular/core';
+import { Component, OnInit,OnDestroy,ViewChild,ElementRef } from '@angular/core';
 import {MatBottomSheet, MatBottomSheetRef} from '@angular/material/bottom-sheet';
 import { FormBuilder, FormGroup, Validators,NgForm} from '@angular/forms';
 import {MatSidenavModule} from '@angular/material/sidenav';
@@ -11,6 +11,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {Subscription} from 'rxjs';
 import{Notification} from '../shared/notification.service';
 import {Router} from '@angular/router';
+import { ObjectID } from 'bson';
 
 // import{ChatService} from '../chat/messages/chat.service';
 @Component({
@@ -23,7 +24,10 @@ export class HomeComponent implements OnInit,OnDestroy {
   constructor(private _bottomSheet: MatBottomSheet,private datastorage:DataStorageService,
     private auth:AuthService,private homeService:HomeService,private _snackBar: MatSnackBar,
     private notify:Notification,private route:Router) {}
-   image:any='';
+ 
+  @ViewChild('scrollMe') private myScrollContainer: ElementRef;
+
+  image:any='';
   uploadpost:FormGroup;
   user:any=null;
   posts:any;
@@ -53,8 +57,7 @@ export class HomeComponent implements OnInit,OnDestroy {
     }
     this.sub2=this.homeService.updateHomePage.
       subscribe(data=>{
-        this.loading=true;
-        this.fetchPosts();
+        this.posts.unshift(data);
       });
 
     setInterval(()=>{
@@ -70,43 +73,70 @@ export class HomeComponent implements OnInit,OnDestroy {
 
     },1000)
   }
+  scrollToTop()
+  {
+      try {
+          this.myScrollContainer.nativeElement.scrollTop = 0;
+      } catch(err) { }   
 
+
+  }
   openBottomSheet(): void {
     const bottomSheetRef = this._bottomSheet.open(BottomSheetComponent,{
       data: {mail:this.auth.getUser().mail},
     });
+    this.scrollToTop();
   }
 
-  like(id,mail)
+   like(id,mail,post:any)
   {
     this.sub3=this.datastorage.likePost(id,mail,this.auth.getUser().mail,1).subscribe(data=>{
-       this.loading=true;
-       this.fetchPosts();
-       // this.chat.likePost(mail);
-       this.datastorage.countNotify(this.auth.getUser().mail).subscribe(count=>{
-          this.notify.getNotifyCount.next(count.count++);  
-      })  
+       // this.fetchPosts();
+       post.count++;
+       post.like=1;
+      //  this.datastorage.countNotify(this.auth.getUser().mail).subscribe(count=>{
+      //     this.notify.getNotifyCount.next(count.count++);  
+      // })  
     });
   }
 
-   unlike(id,mail)
+   unlike(id,mail,post:any)
   {
     this.sub4=this.datastorage.unlikePost(id,mail,this.auth.getUser().mail,-1).subscribe(data=>{
-       this.loading=true;
-       this.fetchPosts();
-       // this.chat.likePost(mail);
-       this.datastorage.countNotify(this.auth.getUser().mail).subscribe(count=>{
-          this.notify.getNotifyCount.next(count.count++);  
-      })  
+       // this.fetchPosts();
+       post.count--;
+       post.like=-1;
+      //  this.datastorage.countNotify(this.auth.getUser().mail).subscribe(count=>{
+      //     this.notify.getNotifyCount.next(count.count++);  
+      // })  
 
     });
   }
 
-  share(post:any,mail:string,id:string)
-  {
-      this.sub5=this.datastorage.sharePost(post,mail,this.auth.getUser().mail,id).subscribe(data=>{
-      this.loading=true;
-      this.fetchPosts();
+  share(post:any,mail:string,id:string,name:string)
+  {    
+      const objId  = new ObjectID().toString();
+      console.log(objId);
+      this.sub5=this.datastorage.sharePost(post,mail,this.auth.getUser().mail,id,objId).subscribe(data=>{
+        this.scrollToTop();
+        this.posts.unshift(      
+          {
+            count: 0,
+            image: this.auth.getUser().image,
+            mail: this.auth.getUser().mail,
+            name: "You",
+            post: {caption:post.caption,desc:post.desc,img:post.img},
+            post_date:this.formatDate(new Date().getTime()),
+            post_time: this.formatTime(new Date().getTime()),
+            privacy: this.auth.getUser().post_privacy,
+            sharedFrom: mail,
+            sharer: name,
+            time: new Date().getTime(),
+            type: post.type,
+            _id:  objId
+          }
+        )
+
       this._snackBar.openFromComponent(SnackbarComponent, {
             duration:2000,
           });
@@ -122,6 +152,34 @@ export class HomeComponent implements OnInit,OnDestroy {
           this.loading=false;
           console.log(data);
         });
+  }
+
+  formatDate(time) 
+   {
+                  
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"];
+    let dateObj = new Date(time);
+    let month = monthNames[dateObj.getMonth()];
+    let day = String(dateObj.getDate()).padStart(2, '0');
+    let year = dateObj.getFullYear();
+    let output = day  + ' '+ month  + ' ' + year;
+     return output;
+
+  }
+
+   formatTime(time) 
+  {
+      var date=new Date(time);
+      var hours = date.getHours();
+      var minutes = date.getMinutes();
+      var ampm = hours >= 12 ? 'pm' : 'am';
+      hours = hours % 12;
+      hours = hours ? hours : 12; // the hour '0' should be '12'
+      var min = (minutes < 10 ? '0'+minutes : minutes);
+      var strTime = hours + ':' + min + ' ' + ampm;
+      
+     return strTime;
   }
 
      ngOnDestroy()
