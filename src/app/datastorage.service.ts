@@ -26,7 +26,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	{
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/createPost',
+	    '/createPost',
 	    {
     	  id:id,
     	  mail:user.mail,
@@ -129,7 +129,7 @@ constructor(private http:HttpClient,private auth:AuthService){}
 	{
 		return this.http
 	  	.post<any>(
-	    'http://localhost:3000/sharePost',
+	    '/sharePost',
 	    {
 	    	post:post,
 	    	mail:mail,
