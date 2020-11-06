@@ -17,7 +17,7 @@
           Please provide a valid password
         </mat-error>
       </mat-form-field>
-      <button mat-raised-button color="primary">Login</button>  
+      <button mat-raised-button color="primary" [disabled]="!form.valid">Login</button>  
       <div class="new_user"><span style="text-align: left">If new User?</span><button mat-raised-button color="accent" 
         (click)="reg=!reg">Create New Account</button></div>
     </form>
